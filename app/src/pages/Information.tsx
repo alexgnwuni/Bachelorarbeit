@@ -1,0 +1,136 @@
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+
+const MIN_AGE = 6;
+const MAX_AGE = 100;
+
+const Information = () => {
+  const navigate = useNavigate();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [age, setAge] = useState<number | null>(null);
+
+  const ages = useMemo(() => Array.from({ length: MAX_AGE - MIN_AGE + 1 }, (_, i) => MIN_AGE + i), []);
+
+  // On mount, snap to previously selected age if any
+  useEffect(() => {
+    const stored = localStorage.getItem("participantAge");
+    const initial = stored ? parseInt(stored, 10) : NaN;
+    if (containerRef.current) {
+      const index = !isNaN(initial) ? Math.min(Math.max(initial, MIN_AGE), MAX_AGE) - MIN_AGE : 0;
+      const itemHeight = 56; // must match h-14 below
+      containerRef.current.scrollTo({ top: index * itemHeight - itemHeight, behavior: "instant" as ScrollBehavior });
+      if (!isNaN(initial)) setAge(initial);
+    }
+  }, []);
+
+  const handleScroll = () => {
+    if (!containerRef.current) return;
+    const el = containerRef.current;
+    const itemHeight = 56; 
+    const centerOffset = el.scrollTop + el.clientHeight / 2;
+    const index = Math.round(centerOffset / itemHeight) - 1;
+    const value = MIN_AGE + Math.min(Math.max(index, 0), ages.length - 1);
+    setAge(value);
+  };
+
+  const handleKey = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setAge(prev => {
+        const next = Math.max((prev ?? MIN_AGE) - 1, MIN_AGE);
+        scrollToAge(next);
+        return next;
+      });
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setAge(prev => {
+        const next = Math.min((prev ?? MIN_AGE) + 1, MAX_AGE);
+        scrollToAge(next);
+        return next;
+      });
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      onContinue();
+    }
+  };
+
+  const scrollToAge = (value: number) => {
+    if (!containerRef.current) return;
+    const itemHeight = 56;
+    const index = value - MIN_AGE;
+    containerRef.current.scrollTo({ top: index * itemHeight - itemHeight, behavior: "smooth" });
+  };
+
+  const onContinue = () => {
+    if (age !== null) {
+      localStorage.setItem("participantAge", String(age));
+    }
+    navigate("/study");
+  };
+
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="container max-w-5xl mx-auto px-4 py-10">
+        <Card className="p-6">
+          <h1 className="text-lg font-semibold">Eine kurze Information</h1>
+          <p className="text-sm text-muted-foreground mt-1">Bitte geben Sie Ihr Alter an (optional).</p>
+          {age !== null && (
+            <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1">
+              <span className="text-sm text-muted-foreground">Ausgewählt:</span>
+              <span className="text-sm font-semibold text-foreground">{age}</span>
+            </div>
+          )}
+
+          <div className="mt-8">
+            <label className="text-sm font-medium text-foreground">Alter</label>
+            <div 
+              className="relative mt-3 h-60 overflow-y-auto overflow-x-hidden snap-y snap-mandatory rounded-xl border bg-card"
+              onScroll={handleScroll}
+              ref={containerRef}
+              tabIndex={0}
+              onKeyDown={handleKey}
+              aria-label="Alter wählen"
+            >
+              
+              <div className="pointer-events-none absolute top-1/2 left-0 right-0 -translate-y-1/2 h-14 rounded-md bg-primary/5" />
+
+              <div className="py-7" aria-live="polite" aria-atomic>
+                {ages.map(v => (
+                  <div
+                    key={v}
+                    className={
+                      "snap-center h-14 flex items-center justify-center text-2xl font-semibold transition-colors transition-transform " +
+                      (age === v ? "text-primary scale-105" : "text-muted-foreground")
+                    }
+                    onClick={() => { setAge(v); scrollToAge(v); }}
+                    role="button"
+                    aria-pressed={age === v}
+                  >
+                    {v}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <p className="mt-2 text-xs text-muted-foreground">
+              Auf Touchpads mit zwei Fingern nach oben und unten scrollen.
+            </p>
+
+            <div className="mt-6 flex gap-3">
+              <Button className="bg-primary text-primary-foreground" onClick={onContinue}>
+                Weiter
+              </Button>
+              <Button variant="ghost" onClick={() => navigate("/study")}>Überspringen</Button>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+export default Information;
+
+
