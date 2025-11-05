@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, XCircle, Trophy, Flame, Sparkles } from "lucide-react";
+import { CheckCircle2, XCircle, Trophy, Flame } from "lucide-react";
 import type { Scenario, UserAssessment } from "@/types/study";
 
 interface ScenarioSummaryProps {

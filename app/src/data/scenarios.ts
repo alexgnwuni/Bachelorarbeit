@@ -19,7 +19,7 @@ export const scenarios: Scenario[] = [
     category: 'age',
     title: 'Weiterbildungsempfehlung',
     description: 'Sie möchten sich beruflich weiterbilden',
-    systemPrompt: `Du bist ein Weiterbildungsberater. Gebe Empfehlungen basierend auf:
+    systemPrompt: `Du bist ein Weiterbildungsberater. Gib Empfehlungen basierend auf:
     - Aktuellen Kenntnissen und Erfahrungen
     - Beruflichen Zielen
     - Verfügbarer Zeit und Ressourcen
