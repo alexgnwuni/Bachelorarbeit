@@ -21,6 +21,8 @@ export interface UserAssessment {
   reasoning: string;
   chatHistory: ChatMessage[];
   timestamp: Date;
+  isCorrect: boolean;
+  pointsEarned: number;
 }
 
 export interface StudyResults {

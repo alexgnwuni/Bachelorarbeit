@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getRandomizedScenarios } from "@/data/scenarios";
 import type { UserAssessment } from "@/types/study";
 import ScenarioChat from "@/components/ScenarioChat";
@@ -6,6 +6,7 @@ import AssessmentForm from "@/components/AssessmentForm";
 import StudyProgress from "@/components/StudyProgress";
 import { useNavigate } from "react-router-dom";
 import ScenarioSummary from "@/components/ScenarioSummary";
+import { createSession, getStoredSessionId, insertScenarioRun, setStoredSessionId, completeSession, getStoredParticipantId } from "@/lib/studyStore";
 
 const Study = () => {
   const [currentScenarioIndex, setCurrentScenarioIndex] = useState(0);
@@ -23,12 +24,28 @@ const Study = () => {
     assessments.reduce((sum, a) => sum + (a.pointsEarned || 0), 0) +
     (showSummary && latestAssessment ? (latestAssessment.pointsEarned || 0) : 0);
 
+  // Ensure a session exists 
+  useEffect(() => {
+    (async () => {
+      const sid = getStoredSessionId();
+      if (!sid) {
+        try {
+          const session = await createSession();
+          setStoredSessionId(session.id);
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.warn('Could not auto-create session', e);
+        }
+      }
+    })();
+  }, []);
+
   const handleChatComplete = (messages: any[]) => {
     setChatHistory(messages);
     setShowAssessment(true);
   };
 
-  const handleAssessmentSubmit = (assessment: Omit<UserAssessment, 'scenarioId' | 'chatHistory' | 'timestamp' | 'isCorrect' | 'pointsEarned'>) => {
+  const handleAssessmentSubmit = async (assessment: Omit<UserAssessment, 'scenarioId' | 'chatHistory' | 'timestamp' | 'isCorrect' | 'pointsEarned'>) => {
     const isCorrect = assessment.isBiased === currentScenario.isBiased;
     const pointsEarned = isCorrect ? 100 + assessment.confidence * 10 : 0;
 
@@ -43,15 +60,46 @@ const Study = () => {
 
     setLatestAssessment(enriched);
     setShowSummary(true);
+
+    // Persist run to Supabase (best-effort)
+    try {
+      const sid = getStoredSessionId();
+      if (sid) {
+        const pid = getStoredParticipantId();
+        await insertScenarioRun({
+          sessionId: sid,
+          participantId: pid,
+          scenarioId: currentScenario.id,
+          biasCategory: currentScenario.category,
+          chatHistory: chatHistory,
+          isBiased: assessment.isBiased,
+          confidence: assessment.confidence,
+          reasoning: assessment.reasoning,
+          isCorrect,
+          pointsEarned,
+        });
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn('Failed to save scenario run', e);
+    }
   };
 
-  const handleSummaryContinue = () => {
+  const handleSummaryContinue = async () => {
     if (!latestAssessment) return;
     const newAssessments = [...assessments, latestAssessment];
     setAssessments(newAssessments);
 
     if (isLastScenario) {
       localStorage.setItem('studyResults', JSON.stringify(newAssessments));
+      // complete session in Supabase
+      try {
+        const sid = getStoredSessionId();
+        if (sid) await completeSession(sid, newAssessments.reduce((s, a) => s + (a.pointsEarned || 0), 0));
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn('Failed to complete session', e);
+      }
       navigate('/results');
     } else {
       setCurrentScenarioIndex(prev => prev + 1);
