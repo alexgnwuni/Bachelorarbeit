@@ -126,7 +126,7 @@ const AssessmentForm = ({ scenario, onSubmit }: AssessmentFormProps) => {
           <Button
             onClick={handleSubmit}
             disabled={!isValid}
-            className="w-full bg-gray-500 hover:opacity-90 shadow text-black"
+            className="w-full"
             size="lg"
           >
             Bewertung abschicken
