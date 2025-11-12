@@ -15,8 +15,8 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 
 const BadgeDisplay = ({ badges }: BadgeDisplayProps) => {
   return (
-    <Card className="p-6 shadow-md">
-      <h2 className="text-xl font-semibold text-foreground mb-4">
+    <Card className="p-4 md:p-6 shadow-md">
+      <h2 className="text-lg md:text-xl font-semibold text-foreground mb-4">
         Errungenschaften
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

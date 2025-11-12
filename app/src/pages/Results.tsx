@@ -112,23 +112,23 @@ const Results = () => {
     <div className="min-h-screen bg-background py-12 px-4">
       <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-700">
         <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold text-foreground">
+          <h1 className="text-2xl md:text-4xl font-bold text-foreground">
             Vielen Dank für Ihre Teilnahme!
           </h1>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-base md:text-lg text-muted-foreground">
             Hier ist eine Zusammenfassung Ihrer Ergebnisse
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <Card className="p-8 bg-card shadow-md text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl shadow-lg mb-4">
-              <Trophy className="w-8 h-8" />
+          <Card className="p-4 md:p-8 bg-card shadow-md text-center">
+            <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 rounded-2xl shadow-lg mb-4">
+              <Trophy className="w-6 h-6 md:w-8 md:h-8" />
             </div>
-            <h2 className="text-lg font-medium text-muted-foreground mb-2">
+            <h2 className="text-base md:text-lg font-medium text-muted-foreground mb-2">
               Gesamtpunkte
             </h2>
-            <div className="text-6xl font-bold text-foreground mb-2 animate-in zoom-in-50">
+            <div className="text-4xl md:text-6xl font-bold text-foreground mb-2 animate-in zoom-in-50">
               {gameStats.totalPoints}
             </div>
             <p className="text-muted-foreground font-semibold">
@@ -136,11 +136,11 @@ const Results = () => {
             </p>
           </Card>
 
-          <Card className="p-8 bg-card shadow-md text-center">
-            <h2 className="text-lg font-medium text-muted-foreground mb-2">
+          <Card className="p-4 md:p-8 bg-card shadow-md text-center">
+            <h2 className="text-base md:text-lg font-medium text-muted-foreground mb-2">
               Gesamtgenauigkeit
             </h2>
-            <div className="text-6xl font-bold text-foreground mb-2">
+            <div className="text-4xl md:text-6xl font-bold text-foreground mb-2">
               {Math.round(overallAccuracy)}%
             </div>
             <p className="text-muted-foreground">
@@ -153,8 +153,8 @@ const Results = () => {
 
         <Leaderboard />
 
-        <Card className="p-6 shadow-md">
-          <h2 className="text-xl font-semibold text-foreground mb-4">
+        <Card className="p-4 md:p-6 shadow-md">
+          <h2 className="text-lg md:text-xl font-semibold text-foreground mb-4">
             Erkennungsleistung nach Kategorie
           </h2>
           <div className="grid md:grid-cols-2 gap-4">
@@ -166,7 +166,7 @@ const Results = () => {
                     <span className="font-medium text-foreground">
                       {categoryNames[category]}
                     </span>
-                    <span className="text-2xl font-bold text-foreground">
+                    <span className="text-xl md:text-2xl font-bold text-foreground">
                       {Math.round(accuracy)}%
                     </span>
                   </div>
@@ -182,8 +182,8 @@ const Results = () => {
           </div>
         </Card>
 
-        <Card className="p-6 shadow-md">
-          <h2 className="text-xl font-semibold text-foreground mb-4">
+        <Card className="p-4 md:p-6 shadow-md">
+          <h2 className="text-lg md:text-xl font-semibold text-foreground mb-4">
             Detaillierte Bewertungen
           </h2>
           <div className="space-y-3">

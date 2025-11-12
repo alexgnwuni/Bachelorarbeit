@@ -11,18 +11,18 @@ const Introduction = () => {
       <div className="container max-w-5xl mx-auto space-y-8 animate-in fade-in duration-700">
         {/* Header */}
         <div className="text-center space-y-4 mx-auto">
-          <h1 className="text-4xl font-bold text-foreground">
+          <h1 className="text-2xl md:text-4xl font-bold text-foreground">
             KI-Bias Erkennungsstudie
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
             Universität Münster - Institut für Wirtschaftsinformatik - Bachelorarbeit
           </p>
         </div>
 
         {/* Main Card */}
-        <Card className="p-8 space-y-6 shadow-md bg-card">
+        <Card className="p-4 md:p-8 space-y-6 shadow-md bg-card">
           <div className="space-y-4">
-            <h2 className="text-2xl font-semibold text-foreground">
+            <h2 className="text-xl md:text-2xl font-semibold text-foreground">
               Willkommen zur Studie
             </h2>
             <p className="text-foreground/80 leading-relaxed">
