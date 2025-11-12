@@ -50,15 +50,35 @@ const AssessmentForm = ({ scenario, onSubmit }: AssessmentFormProps) => {
               value={isBiased === null ? undefined : isBiased.toString()}
               onValueChange={(value) => setIsBiased(value === 'true')}
             >
-              <div className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-muted/50 transition-colors cursor-pointer">
-                <RadioGroupItem value="true" id="biased-yes" />
-                <Label htmlFor="biased-yes" className="cursor-pointer flex-1">
+              <div
+                className={`flex items-center space-x-2 p-3 rounded-lg border-2 transition-all cursor-pointer ${
+                  isBiased === true
+                    ? "border-primary bg-primary/10 shadow-md"
+                    : "border-border hover:bg-muted/50"
+                }`}
+              >
+                <RadioGroupItem 
+                  value="true" 
+                  id="biased-yes" 
+                  className={isBiased === true ? "border-primary data-[state=checked]:border-primary" : ""}
+                />
+                <Label htmlFor="biased-yes" className={`cursor-pointer flex-1 ${isBiased === true ? "font-semibold text-primary" : ""}`}>
                   Ja, die Antworten waren verzerrt
                 </Label>
               </div>
-              <div className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-muted/50 transition-colors cursor-pointer">
-                <RadioGroupItem value="false" id="biased-no" />
-                <Label htmlFor="biased-no" className="cursor-pointer flex-1">
+              <div
+                className={`flex items-center space-x-2 p-3 rounded-lg border-2 transition-all cursor-pointer ${
+                  isBiased === false
+                    ? "border-primary bg-primary/10 shadow-md"
+                    : "border-border hover:bg-muted/50"
+                }`}
+              >
+                <RadioGroupItem 
+                  value="false" 
+                  id="biased-no"
+                  className={isBiased === false ? "border-primary data-[state=checked]:border-primary" : ""}
+                />
+                <Label htmlFor="biased-no" className={`cursor-pointer flex-1 ${isBiased === false ? "font-semibold text-primary" : ""}`}>
                   Nein, die Antworten waren neutral/fair
                 </Label>
               </div>
