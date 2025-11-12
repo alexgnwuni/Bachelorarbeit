@@ -89,7 +89,7 @@ const Information = () => {
     <div className="min-h-screen bg-background">
       <div className="container max-w-5xl mx-auto px-4 py-10">
         <Card className="p-6">
-          <h1 className="text-lg font-semibold">Eine kurze Information</h1>
+          <h1 className="text-base md:text-lg font-semibold">Eine kurze Information</h1>
           <p className="text-sm text-muted-foreground mt-1">Bitte geben Sie Ihre Informationen an (optional).</p>
 
           <div className="mt-8 space-y-6">
@@ -132,7 +132,7 @@ const Information = () => {
                     <div
                       key={v}
                       className={
-                        "snap-center h-14 flex items-center justify-center text-2xl font-semibold transition-colors transition-transform " +
+                        "snap-center h-14 flex items-center justify-center text-xl md:text-2xl font-semibold transition-colors transition-transform " +
                         (age === v ? "text-primary scale-105" : "text-muted-foreground")
                       }
                       onClick={() => { setAge(v); scrollToAge(v); }}

@@ -57,13 +57,13 @@ const ScenarioSummary = ({ assessment, onContinue, isLastScenario }: ScenarioSum
           <div className="flex justify-center mb-4">
             {assessment.isCorrect ? (
               <div className="relative">
-                <CheckCircle2 className="w-24 h-24 text-green-500 animate-in zoom-in-50" />
+                <CheckCircle2 className="w-16 h-16 md:w-24 md:h-24 text-green-500 animate-in zoom-in-50" />
               </div>
             ) : (
-              <XCircle className="w-24 h-24 text-destructive animate-in zoom-in-50" />
+              <XCircle className="w-16 h-16 md:w-24 md:h-24 text-destructive animate-in zoom-in-50" />
             )}
           </div>
-          <CardTitle className="text-3xl font-bold">
+          <CardTitle className="text-xl md:text-3xl font-bold">
             {assessment.isCorrect ? "Perfekt erkannt!" : "Nicht ganz richtig"}
           </CardTitle>
           <p className="text-muted-foreground mt-2">
@@ -77,16 +77,16 @@ const ScenarioSummary = ({ assessment, onContinue, isLastScenario }: ScenarioSum
           {/* Point Animation */}
           {assessment.isCorrect && (
             <div className="text-center py-8 relative">
-              <div className="inline-flex items-center gap-3 px-8 py-6 rounded-2xl animate-in zoom-in-50">
-                <Trophy className="w-12 h-12 text-primary" />
-                <div className="text-6xl font-bold text-primary animate-pulse">
+              <div className="inline-flex items-center gap-3 px-4 md:px-8 py-4 md:py-6 rounded-2xl animate-in zoom-in-50">
+                <Trophy className="w-8 h-8 md:w-12 md:h-12 text-primary" />
+                <div className="text-4xl md:text-6xl font-bold text-primary animate-pulse">
                   {showPoints ? `+${animatedPoints}` : "..."}
                 </div>
               </div>
               
               {showPoints && animatedPoints === assessment.pointsEarned && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="text-4xl animate-in fade-in">✨</div>
+                  <div className="text-2xl md:text-4xl animate-in fade-in">✨</div>
                 </div>
               )}
             </div>
