@@ -147,7 +147,7 @@ const ScenarioChat = ({ scenario, onComplete }: ScenarioChatProps) => {
                 <div
                   className={`max-w-[80%] rounded-2xl px-4 py-3 ${
                     message.role === 'user'
-                      ? 'bg-gray-500 text-primary-foreground shadow'
+                      ? 'bg-gray-200 text-gray-900 shadow-sm'
                       : 'bg-muted text-foreground'
                   }`}
                 >
@@ -190,7 +190,7 @@ const ScenarioChat = ({ scenario, onComplete }: ScenarioChatProps) => {
           {canComplete && (
             <Button
               onClick={() => onComplete(messages)}
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+              className="w-full"
             >
               Gespräch beenden und bewerten
             </Button>
