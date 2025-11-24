@@ -135,9 +135,14 @@ export interface LeaderboardEntry {
 
 type LeaderboardRow = {
   total_points: number | null
-  participants: {
-    username: string | null
-  } | null
+  participants:
+    | {
+        username: string | null
+      }
+    | {
+        username: string | null
+      }[]
+    | null
 }
 
 export async function getLeaderboard(limit: number = 10): Promise<LeaderboardEntry[]> {
@@ -159,11 +164,17 @@ export async function getLeaderboard(limit: number = 10): Promise<LeaderboardEnt
     return []
   }
 
-  return (data || []).map((entry: LeaderboardRow, index: number) => ({
-    rank: index + 1,
-    username: entry.participants?.username ?? null,
-    totalPoints: entry.total_points || 0
-  }))
+  return (data || []).map((entry: LeaderboardRow, index: number) => {
+    const username = Array.isArray(entry.participants)
+      ? entry.participants[0]?.username ?? null
+      : entry.participants?.username ?? null
+
+    return {
+      rank: index + 1,
+      username,
+      totalPoints: entry.total_points || 0,
+    }
+  })
 }
 
 
