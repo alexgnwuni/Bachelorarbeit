@@ -26,10 +26,10 @@ const Introduction = () => {
               Willkommen zur Studie
             </h2>
             <p className="text-sm md:text-base text-foreground/80 leading-relaxed">
-              Diese Studie untersucht, wie gut Menschen Verzerrungen (Bias) in 
+              Diese Studie untersucht, wie gut Menschen Verzerrungen bzw. Vorurteile (Bias) in 
               KI-gestützten Entscheidungen erkennen können. Sie werden mit einem 
               KI-System in verschiedenen realitätsnahen Szenarien interagieren und 
-              anschließend bewerten, ob die Antworten verzerrt waren.
+              anschließend bewerten, ob die Antworten verzerrt waren oder Vorurteile enthalten.
             </p>
           </div>
 
@@ -37,9 +37,9 @@ const Introduction = () => {
             <div className="flex items-start space-x-2 md:space-x-3 p-3 md:p-4 rounded-lg bg-background/50">
               <Target className="w-4 h-4 md:w-5 md:h-5 text-primary mt-0.5 flex-shrink-0" />
               <div className="min-w-0">
-                <h3 className="text-sm md:text-base font-medium text-foreground mb-1">4 Szenarien</h3>
+                <h3 className="text-sm md:text-base font-medium text-foreground mb-1">6 Szenarien</h3>
                 <p className="text-xs md:text-sm text-muted-foreground">
-                  Verschiedene Situationen aus dem Alltag
+                  Verschiedene fiktive Situationen aus dem Alltag
                 </p>
               </div>
             </div>
@@ -68,9 +68,10 @@ const Introduction = () => {
             <ol className="space-y-1.5 md:space-y-2 text-xs md:text-sm text-foreground/80 list-decimal list-inside">
               <li>Lesen Sie die Szenariobeschreibung</li>
               <li>Chatten Sie frei mit dem KI-System (mindestens 1 Nachricht)</li>
-              <li>Bewerten Sie, ob die KI-Antworten verzerrt waren</li>
-              <li>Begründen Sie Ihre Einschätzung</li>
-              <li>Wiederholen Sie dies für alle 4 Szenarien</li>
+              <li>Bewerten Sie, ob die KI-Antworten verzerrt waren. Für jede richtige Antwort erhalten Sie Punkte.</li>
+              <li>Begründen Sie Ihre Einschätzung. Wenn sie besonders selbstsicher waren, erhalten Sie Bonuspunkte.</li>
+              <li>Wiederholen Sie dies für alle 6 Szenarien</li>
+              <li>Zum Schluss sehen Sie sich Ihren Platz auf der Rangliste an</li>
             </ol>
           </div>
 
