@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
 import { useNavigate } from "react-router-dom";
 import { ensureParticipant, createSession, setStoredSessionId, setStoredParticipantId } from "@/lib/studyStore";
 
@@ -14,6 +15,11 @@ const Information = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [age, setAge] = useState<number | null>(null);
   const [username, setUsername] = useState<string>("");
+  
+  // Survey State
+  const [aiKnowledge, setAiKnowledge] = useState<number>(3);
+  const [aiAttitude, setAiAttitude] = useState<number>(3);
+  const [aiReliance, setAiReliance] = useState<number>(3);
 
   const ages = useMemo(() => Array.from({ length: MAX_AGE - MIN_AGE + 1 }, (_, i) => MIN_AGE + i), []);
 
@@ -72,8 +78,13 @@ const Information = () => {
       if (age !== null) {
         localStorage.setItem("participantAge", String(age));
       }
-      // Create participant (with age and username) → session
-      const participant = await ensureParticipant(undefined, age ?? null, username.trim() || null)
+      // Create participant (with age, username, and survey) → session
+      const participant = await ensureParticipant(undefined, age ?? null, username.trim() || null, {
+        aiKnowledge,
+        aiAttitude,
+        aiReliance
+      });
+      
       if (participant?.id) setStoredParticipantId(participant.id)
       const session = await createSession(participant?.id)
       setStoredSessionId(session.id)
@@ -91,7 +102,7 @@ const Information = () => {
           <h1 className="text-base md:text-lg font-semibold">Eine kurze Information</h1>
           <p className="text-xs md:text-sm text-muted-foreground mt-1">Bitte geben Sie Ihre Informationen an (optional).</p>
 
-          <div className="mt-4 md:mt-8 space-y-6 md:space-y-6">
+          <div className="mt-4 md:mt-8 space-y-8">
             {/* Username Input */}
             <div className="space-y-4">
               <Label htmlFor="username" className="text-sm font-medium text-foreground">
@@ -147,6 +158,44 @@ const Information = () => {
               <p className="mt-2 text-xs text-muted-foreground">
                 Auf Touchpads mit zwei Fingern nach oben und unten scrollen.
               </p>
+            </div>
+
+            {/* Survey Questions */}
+            <div className="space-y-6 pt-4 border-t">
+              <h3 className="text-sm font-semibold">Zusätzliche Fragen</h3>
+              
+              <div className="space-y-4">
+                <Label>Ich kenne typische Risiken wie Bias oder Halluzinationen in KI-Systemen.</Label>
+                <div className="pt-2 px-1">
+                  <Slider value={[aiKnowledge]} onValueChange={([v]) => setAiKnowledge(v)} min={1} max={5} step={1} />
+                  <div className="flex justify-between mt-2 text-xs text-muted-foreground">
+                    <span>Stimme gar nicht zu</span>
+                    <span>Stimme voll zu</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <Label>Wie ist Ihre Einstellung gegenüber künstlicher Intelligenz?</Label>
+                <div className="pt-2 px-1">
+                  <Slider value={[aiAttitude]} onValueChange={([v]) => setAiAttitude(v)} min={1} max={5} step={1} />
+                  <div className="flex justify-between mt-2 text-xs text-muted-foreground">
+                    <span>Negativ / Skeptisch</span>
+                    <span>Positiv / Optimistisch</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <Label>Wie sehr verlassen Sie sich im Alltag auf künstliche Intelligenz?</Label>
+                <div className="pt-2 px-1">
+                  <Slider value={[aiReliance]} onValueChange={([v]) => setAiReliance(v)} min={1} max={5} step={1} />
+                  <div className="flex justify-between mt-2 text-xs text-muted-foreground">
+                    <span>Nie / Gar nicht</span>
+                    <span>Sehr oft / Stark</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="mt-4 md:mt-6 flex flex-col sm:flex-row gap-2 md:gap-3">

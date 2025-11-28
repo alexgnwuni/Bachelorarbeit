@@ -11,7 +11,22 @@ export type AiAnalysisResult = {
   metadata?: Record<string, unknown>
 }
 
-export async function ensureParticipant(userId?: string, age?: number | null, username?: string | null) {
+export async function ensureParticipant(
+  userId?: string, 
+  age?: number | null, 
+  username?: string | null,
+  survey?: {
+    aiKnowledge?: number;
+    aiAttitude?: number;
+    aiReliance?: number;
+  }
+) {
+  const surveyFields = survey ? {
+    ai_knowledge: survey.aiKnowledge,
+    ai_attitude: survey.aiAttitude,
+    ai_reliance: survey.aiReliance
+  } : {};
+
   if (userId) {
     const { data, error } = await supabase
       .from('participants')
@@ -20,11 +35,15 @@ export async function ensureParticipant(userId?: string, age?: number | null, us
       .limit(1)
       .maybeSingle()
     if (!error && data) {
-      // Update username if provided and different
-      if (username && data.username !== username) {
+      // Update username or survey data if provided
+      const updates: any = {};
+      if (username && data.username !== username) updates.username = username;
+      if (survey) Object.assign(updates, surveyFields);
+
+      if (Object.keys(updates).length > 0) {
         const { data: updated } = await supabase
           .from('participants')
-          .update({ username })
+          .update(updates)
           .eq('id', data.id)
           .select()
           .single()
@@ -32,12 +51,21 @@ export async function ensureParticipant(userId?: string, age?: number | null, us
       }
       return data
     }
-    const ins = await supabase.from('participants').insert({ user_id: userId, age: age ?? null, username: username ?? null }).select().single()
+    const ins = await supabase.from('participants').insert({ 
+      user_id: userId, 
+      age: age ?? null, 
+      username: username ?? null,
+      ...surveyFields
+    }).select().single()
     if (ins.error) throw ins.error
     return ins.data
   }
   // anonymous participant (no auth)
-  const ins = await supabase.from('participants').insert({ age: age ?? null, username: username ?? null }).select().single()
+  const ins = await supabase.from('participants').insert({ 
+    age: age ?? null, 
+    username: username ?? null,
+    ...surveyFields
+  }).select().single()
   if (ins.error) throw ins.error
   return ins.data
 }
@@ -58,6 +86,7 @@ export async function insertScenarioRun(args: {
   biasCategory: string
   chatHistory: ChatItem[]
   isBiased: boolean
+  guessedBiasCategory?: string
   confidence: number
   reasoning: string
   isCorrect: boolean
@@ -73,6 +102,7 @@ export async function insertScenarioRun(args: {
       bias_category: args.biasCategory,
       chat_history: args.chatHistory,
       is_biased: args.isBiased,
+      guessed_bias_category: args.guessedBiasCategory ?? null,
       confidence: args.confidence,
       reasoning: args.reasoning,
       is_correct: args.isCorrect,
@@ -175,6 +205,56 @@ export async function getLeaderboard(limit: number = 10): Promise<LeaderboardEnt
       totalPoints: entry.total_points || 0,
     }
   })
+}
+
+export interface ScenarioStatistics {
+  totalParticipants: number;
+  averageConfidence: number;
+  correctPercentage: number;
+  categoryDistribution?: Record<string, number>; // For exploration scenarios
+}
+
+export async function getScenarioStatistics(scenarioId: string): Promise<ScenarioStatistics | null> {
+  try {
+    const { data, error } = await supabase
+      .from('scenario_runs')
+      .select('confidence, is_correct, guessed_bias_category')
+      .eq('scenario_id', scenarioId)
+
+    if (error) {
+      console.error('Failed to fetch scenario statistics', error)
+      return null
+    }
+
+    if (!data || data.length === 0) {
+      return null
+    }
+
+    // Calculate statistics
+    const totalParticipants = data.length
+    const avgConfidence = data.reduce((sum, run) => sum + (run.confidence || 0), 0) / totalParticipants
+    const correctCount = data.filter(run => run.is_correct).length
+    const correctPercentage = (correctCount / totalParticipants) * 100
+
+    // Calculate category distribution for exploration scenarios
+    const categoryDistribution: Record<string, number> = {}
+    data.forEach(run => {
+      if (run.guessed_bias_category) {
+        categoryDistribution[run.guessed_bias_category] = 
+          (categoryDistribution[run.guessed_bias_category] || 0) + 1
+      }
+    })
+
+    return {
+      totalParticipants,
+      averageConfidence: Math.round(avgConfidence * 10) / 10,
+      correctPercentage: Math.round(correctPercentage),
+      categoryDistribution: Object.keys(categoryDistribution).length > 0 ? categoryDistribution : undefined
+    }
+  } catch (err) {
+    console.error('Error fetching scenario statistics:', err)
+    return null
+  }
 }
 
 

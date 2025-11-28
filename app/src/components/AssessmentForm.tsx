@@ -4,34 +4,51 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import type { Scenario } from "@/types/study";
+import type { Scenario, BiasCategory } from "@/types/study";
 import { Slider } from "@/components/ui/slider";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface AssessmentFormProps {
   scenario: Scenario;
   onSubmit: (assessment: {
     isBiased: boolean;
+    guessedCategory?: BiasCategory;
     confidence: number;
     reasoning: string;
   }) => void;
 }
 
+const BIAS_CATEGORIES: { value: BiasCategory; label: string }[] = [
+  { value: 'gender', label: 'Geschlecht (Gender Bias)' },
+  { value: 'age', label: 'Alter (Age Bias)' },
+  { value: 'ethnicity', label: 'Herkunft/Ethnie (Ethnicity Bias)' },
+  { value: 'status', label: 'Sozioökonomischer Status (Status Bias)' },
+];
+
 const AssessmentForm = ({ scenario, onSubmit }: AssessmentFormProps) => {
   const [isBiased, setIsBiased] = useState<boolean | null>(null);
+  const [guessedCategory, setGuessedCategory] = useState<BiasCategory | null>(null);
   const [confidence, setConfidence] = useState<number>(3);
   const [reasoning, setReasoning] = useState("");
 
   const handleSubmit = () => {
     if (isBiased === null || !reasoning.trim()) return;
+    
+    // Check if category is required but missing
+    if (scenario.type === 'exploration' && isBiased && !guessedCategory) return;
 
     onSubmit({
       isBiased,
+      guessedCategory: guessedCategory ?? undefined,
       confidence,
       reasoning: reasoning.trim(),
     });
   };
 
-  const isValid = isBiased !== null && reasoning.trim().length > 0;
+  const isValid = 
+    isBiased !== null && 
+    reasoning.trim().length > 0 &&
+    (scenario.type !== 'exploration' || !isBiased || guessedCategory !== null);
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500 w-full">
@@ -48,7 +65,11 @@ const AssessmentForm = ({ scenario, onSubmit }: AssessmentFormProps) => {
             </Label>
             <RadioGroup
               value={isBiased === null ? undefined : isBiased.toString()}
-              onValueChange={(value) => setIsBiased(value === 'true')}
+              onValueChange={(value) => {
+                const newVal = value === 'true';
+                setIsBiased(newVal);
+                if (!newVal) setGuessedCategory(null);
+              }}
             >
               <div
                 className={`flex items-center space-x-2 p-3 rounded-lg border-2 transition-all cursor-pointer ${
@@ -84,6 +105,30 @@ const AssessmentForm = ({ scenario, onSubmit }: AssessmentFormProps) => {
               </div>
             </RadioGroup>
           </div>
+
+          {/* hier Kategorie Auswahl */}
+          {scenario.type === 'exploration' && isBiased && (
+            <div className="space-y-3 animate-in slide-in-from-top-2 duration-300">
+              <Label className="text-base font-medium">
+                Welche Art von Verzerrung haben Sie erkannt?
+              </Label>
+              <Select
+                value={guessedCategory ?? undefined}
+                onValueChange={(val) => setGuessedCategory(val as BiasCategory)}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Bitte wählen Sie eine Kategorie" />
+                </SelectTrigger>
+                <SelectContent>
+                  {BIAS_CATEGORIES.map((cat) => (
+                    <SelectItem key={cat.value} value={cat.value}>
+                      {cat.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
 
           
           <div className="space-y-3">

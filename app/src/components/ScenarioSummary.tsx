@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, XCircle, Trophy, Flame } from "lucide-react";
+import { CheckCircle2, XCircle, Trophy, Flame, Users, TrendingUp } from "lucide-react";
 import type { Scenario, UserAssessment } from "@/types/study";
+import { getScenarioStatistics, type ScenarioStatistics } from "@/lib/studyStore";
 
 interface ScenarioSummaryProps {
   scenario: Scenario;
@@ -11,9 +12,11 @@ interface ScenarioSummaryProps {
   isLastScenario: boolean;
 }
 
-const ScenarioSummary = ({ assessment, onContinue, isLastScenario }: ScenarioSummaryProps) => {
+const ScenarioSummary = ({ scenario, assessment, onContinue, isLastScenario }: ScenarioSummaryProps) => {
   const [showPoints, setShowPoints] = useState(false);
   const [animatedPoints, setAnimatedPoints] = useState(0);
+  const [statistics, setStatistics] = useState<ScenarioStatistics | null>(null);
+  const [showComparison, setShowComparison] = useState(false);
 
   useEffect(() => {
     // Start point animation after a short delay
@@ -24,6 +27,17 @@ const ScenarioSummary = ({ assessment, onContinue, isLastScenario }: ScenarioSum
 
     return () => clearTimeout(timer);
   }, [assessment.pointsEarned]);
+
+  useEffect(() => {
+    // Fetch statistics from database
+    const fetchStats = async () => {
+      const stats = await getScenarioStatistics(scenario.id);
+      setStatistics(stats);
+      setShowComparison(true); // Show immediately without delay
+    };
+
+    fetchStats();
+  }, [scenario.id]);
 
   const animatePoints = () => {
     const duration = 1500;
@@ -142,6 +156,103 @@ const ScenarioSummary = ({ assessment, onContinue, isLastScenario }: ScenarioSum
               <div className="text-sm text-muted-foreground mb-2">Deine Begründung:</div>
               <p className="text-sm">{assessment.reasoning}</p>
             </Card>
+          )}
+
+          {/* Comparison Statistics */}
+          {showComparison && statistics && statistics.totalParticipants > 1 && (
+            <div className="space-y-4 animate-in slide-in-from-bottom-4 duration-500">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Users className="w-5 h-5" />
+                <h3 className="font-semibold">Vergleich mit anderen Teilnehmern</h3>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                {/* Confidence Comparison */}
+                <Card className="p-4 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 border-blue-200 dark:border-blue-800">
+                  <div className="text-sm text-muted-foreground mb-2">Selbstvertrauen</div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-2xl font-bold">{assessment.confidence}/5</span>
+                    <span className="text-sm text-muted-foreground">Du</span>
+                  </div>
+                  <div className="flex items-baseline gap-2 mt-1">
+                    <span className="text-lg font-semibold text-muted-foreground">{statistics.averageConfidence}/5</span>
+                    <span className="text-xs text-muted-foreground">Durchschnitt</span>
+                  </div>
+                  {assessment.confidence > statistics.averageConfidence && (
+                    <div className="mt-2 flex items-center gap-1 text-xs text-green-600 dark:text-green-400">
+                      <TrendingUp className="w-3 h-3" />
+                      <span>Überdurchschnittlich sicher</span>
+                    </div>
+                  )}
+                </Card>
+
+                {/* Performance Percentile */}
+                <Card className="p-4 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950 dark:to-purple-900 border-purple-200 dark:border-purple-800">
+                  <div className="text-sm text-muted-foreground mb-2">Deine Leistung</div>
+                  {assessment.isCorrect ? (
+                    <>
+                      <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                        {100 - statistics.correctPercentage}% übertroffen
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-1">
+                        {100 - statistics.correctPercentage > 50 
+                          ? "Besser als die meisten Teilnehmer" 
+                          : `${100 - statistics.correctPercentage}% hatten es falsch`}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="text-lg font-semibold text-orange-600 dark:text-orange-400">
+                        {statistics.correctPercentage}% waren korrekt
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-1">
+                        Du lernst beim nächsten Mal dazu!
+                      </div>
+                    </>
+                  )}
+                </Card>
+              </div>
+
+              {/* Category Distribution for Exploration Mode */}
+              {scenario.type === 'exploration' && statistics.categoryDistribution && Object.keys(statistics.categoryDistribution).length > 0 && (
+                <Card className="p-4 bg-muted/30">
+                  <div className="text-sm text-muted-foreground mb-3">Was andere Teilnehmer gewählt haben:</div>
+                  <div className="space-y-2">
+                    {Object.entries(statistics.categoryDistribution).map(([category, count]) => {
+                      const percentage = Math.round((count / statistics.totalParticipants) * 100);
+                      const categoryLabels: Record<string, string> = {
+                        gender: 'Geschlecht',
+                        age: 'Alter',
+                        ethnicity: 'Herkunft/Ethnie',
+                        status: 'Status',
+                      };
+                      const isUserChoice = assessment.guessedCategory === category;
+                      
+                      return (
+                        <div key={category} className="space-y-1">
+                          <div className="flex items-center justify-between text-sm">
+                            <span className={isUserChoice ? "font-semibold text-primary" : ""}>
+                              {categoryLabels[category] || category}
+                              {isUserChoice && " (Du)"}
+                            </span>
+                            <span className="font-medium">{percentage}%</span>
+                          </div>
+                          <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
+                            <div 
+                              className={`h-full transition-all duration-500 ${isUserChoice ? "bg-primary" : "bg-muted-foreground/50"}`}
+                              style={{ width: `${percentage}%` }}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="mt-2 text-xs text-muted-foreground">
+                    Basierend auf {statistics.totalParticipants} Teilnehmer{statistics.totalParticipants !== 1 ? 'n' : ''}
+                  </div>
+                </Card>
+              )}
+            </div>
           )}
 
           {/* Continue Button */}
