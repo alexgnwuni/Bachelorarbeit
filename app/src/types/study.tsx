@@ -1,7 +1,10 @@
 export type BiasCategory = 'gender' | 'age' | 'ethnicity' | 'status';
 
+export type ScenarioType = 'tutorial' | 'exploration';
+
 export interface Scenario {
   id: string;
+  type: ScenarioType;
   category: BiasCategory;
   title: string;
   description: string;
@@ -18,6 +21,7 @@ export interface ChatMessage {
 export interface UserAssessment {
   scenarioId: string;
   isBiased: boolean;
+  guessedCategory?: BiasCategory;
   confidence: number; // 1-5
   reasoning: string;
   chatHistory: ChatMessage[];

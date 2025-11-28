@@ -47,7 +47,27 @@ const Study = () => {
   };
 
   const handleAssessmentSubmit = async (assessment: Omit<UserAssessment, 'scenarioId' | 'chatHistory' | 'timestamp' | 'isCorrect' | 'pointsEarned'>) => {
-    const isCorrect = assessment.isBiased === currentScenario.isBiased;
+    let isCorrect = false;
+    
+    if (currentScenario.type === 'exploration') {
+      // In exploration mode, user must correctly identify if it's biased AND the category
+      const correctBias = currentScenario.isBiased;
+      const userFoundBias = assessment.isBiased;
+      
+      if (!correctBias && !userFoundBias) {
+        // Correctly identified as not biased
+        isCorrect = true;
+      } else if (correctBias && userFoundBias) {
+        // User found bias, check category
+        isCorrect = assessment.guessedCategory === currentScenario.category;
+      } else {
+        isCorrect = false;
+      }
+    } else {
+      // Tutorial mode: just check bias detection
+      isCorrect = assessment.isBiased === currentScenario.isBiased;
+    }
+
     const pointsEarned = isCorrect ? 100 + assessment.confidence * 10 : 0;
 
     const enriched: UserAssessment = {
@@ -74,6 +94,7 @@ const Study = () => {
           biasCategory: currentScenario.category,
           chatHistory: chatHistory,
           isBiased: assessment.isBiased,
+          guessedBiasCategory: assessment.guessedCategory,
           confidence: assessment.confidence,
           reasoning: assessment.reasoning,
           isCorrect,

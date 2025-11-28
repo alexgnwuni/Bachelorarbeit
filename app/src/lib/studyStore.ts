@@ -11,7 +11,22 @@ export type AiAnalysisResult = {
   metadata?: Record<string, unknown>
 }
 
-export async function ensureParticipant(userId?: string, age?: number | null, username?: string | null) {
+export async function ensureParticipant(
+  userId?: string, 
+  age?: number | null, 
+  username?: string | null,
+  survey?: {
+    aiKnowledge?: number;
+    aiAttitude?: number;
+    aiReliance?: number;
+  }
+) {
+  const surveyFields = survey ? {
+    ai_knowledge: survey.aiKnowledge,
+    ai_attitude: survey.aiAttitude,
+    ai_reliance: survey.aiReliance
+  } : {};
+
   if (userId) {
     const { data, error } = await supabase
       .from('participants')
@@ -20,11 +35,15 @@ export async function ensureParticipant(userId?: string, age?: number | null, us
       .limit(1)
       .maybeSingle()
     if (!error && data) {
-      // Update username if provided and different
-      if (username && data.username !== username) {
+      // Update username or survey data if provided
+      const updates: any = {};
+      if (username && data.username !== username) updates.username = username;
+      if (survey) Object.assign(updates, surveyFields);
+
+      if (Object.keys(updates).length > 0) {
         const { data: updated } = await supabase
           .from('participants')
-          .update({ username })
+          .update(updates)
           .eq('id', data.id)
           .select()
           .single()
@@ -32,12 +51,21 @@ export async function ensureParticipant(userId?: string, age?: number | null, us
       }
       return data
     }
-    const ins = await supabase.from('participants').insert({ user_id: userId, age: age ?? null, username: username ?? null }).select().single()
+    const ins = await supabase.from('participants').insert({ 
+      user_id: userId, 
+      age: age ?? null, 
+      username: username ?? null,
+      ...surveyFields
+    }).select().single()
     if (ins.error) throw ins.error
     return ins.data
   }
   // anonymous participant (no auth)
-  const ins = await supabase.from('participants').insert({ age: age ?? null, username: username ?? null }).select().single()
+  const ins = await supabase.from('participants').insert({ 
+    age: age ?? null, 
+    username: username ?? null,
+    ...surveyFields
+  }).select().single()
   if (ins.error) throw ins.error
   return ins.data
 }
@@ -58,6 +86,7 @@ export async function insertScenarioRun(args: {
   biasCategory: string
   chatHistory: ChatItem[]
   isBiased: boolean
+  guessedBiasCategory?: string
   confidence: number
   reasoning: string
   isCorrect: boolean
@@ -73,6 +102,7 @@ export async function insertScenarioRun(args: {
       bias_category: args.biasCategory,
       chat_history: args.chatHistory,
       is_biased: args.isBiased,
+      guessed_bias_category: args.guessedBiasCategory ?? null,
       confidence: args.confidence,
       reasoning: args.reasoning,
       is_correct: args.isCorrect,
