@@ -207,4 +207,54 @@ export async function getLeaderboard(limit: number = 10): Promise<LeaderboardEnt
   })
 }
 
+export interface ScenarioStatistics {
+  totalParticipants: number;
+  averageConfidence: number;
+  correctPercentage: number;
+  categoryDistribution?: Record<string, number>; // For exploration scenarios
+}
+
+export async function getScenarioStatistics(scenarioId: string): Promise<ScenarioStatistics | null> {
+  try {
+    const { data, error } = await supabase
+      .from('scenario_runs')
+      .select('confidence, is_correct, guessed_bias_category')
+      .eq('scenario_id', scenarioId)
+
+    if (error) {
+      console.error('Failed to fetch scenario statistics', error)
+      return null
+    }
+
+    if (!data || data.length === 0) {
+      return null
+    }
+
+    // Calculate statistics
+    const totalParticipants = data.length
+    const avgConfidence = data.reduce((sum, run) => sum + (run.confidence || 0), 0) / totalParticipants
+    const correctCount = data.filter(run => run.is_correct).length
+    const correctPercentage = (correctCount / totalParticipants) * 100
+
+    // Calculate category distribution for exploration scenarios
+    const categoryDistribution: Record<string, number> = {}
+    data.forEach(run => {
+      if (run.guessed_bias_category) {
+        categoryDistribution[run.guessed_bias_category] = 
+          (categoryDistribution[run.guessed_bias_category] || 0) + 1
+      }
+    })
+
+    return {
+      totalParticipants,
+      averageConfidence: Math.round(avgConfidence * 10) / 10,
+      correctPercentage: Math.round(correctPercentage),
+      categoryDistribution: Object.keys(categoryDistribution).length > 0 ? categoryDistribution : undefined
+    }
+  } catch (err) {
+    console.error('Error fetching scenario statistics:', err)
+    return null
+  }
+}
+
 
