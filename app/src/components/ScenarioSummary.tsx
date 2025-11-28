@@ -16,7 +16,6 @@ const ScenarioSummary = ({ scenario, assessment, onContinue, isLastScenario }: S
   const [showPoints, setShowPoints] = useState(false);
   const [animatedPoints, setAnimatedPoints] = useState(0);
   const [statistics, setStatistics] = useState<ScenarioStatistics | null>(null);
-  const [loadingStats, setLoadingStats] = useState(true);
   const [showComparison, setShowComparison] = useState(false);
 
   useEffect(() => {
@@ -32,10 +31,8 @@ const ScenarioSummary = ({ scenario, assessment, onContinue, isLastScenario }: S
   useEffect(() => {
     // Fetch statistics from database
     const fetchStats = async () => {
-      setLoadingStats(true);
       const stats = await getScenarioStatistics(scenario.id);
       setStatistics(stats);
-      setLoadingStats(false);
       setShowComparison(true); // Show immediately without delay
     };
 
