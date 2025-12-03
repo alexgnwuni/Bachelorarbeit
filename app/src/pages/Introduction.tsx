@@ -37,9 +37,9 @@ const Introduction = () => {
             <div className="flex items-start space-x-2 md:space-x-3 p-3 md:p-4 rounded-lg bg-background/50">
               <Target className="w-4 h-4 md:w-5 md:h-5 text-primary mt-0.5 flex-shrink-0" />
               <div className="min-w-0">
-                <h3 className="text-sm md:text-base font-medium text-foreground mb-1">6 Szenarien</h3>
+                <h3 className="text-sm md:text-base font-medium text-foreground mb-1">8 Szenarien</h3>
                 <p className="text-xs md:text-sm text-muted-foreground">
-                  Verschiedene fiktive Situationen aus dem Alltag
+                  Tutorial & Exploration-Szenarien
                 </p>
               </div>
             </div>
@@ -57,7 +57,7 @@ const Introduction = () => {
               <div className="min-w-0">
                 <h3 className="text-sm md:text-base font-medium text-foreground mb-1">Ihre Bewertung</h3>
                 <p className="text-xs md:text-sm text-muted-foreground">
-                  Einschätzung und Begründung
+                  Einschätzung, Kategorie & Begründung
                 </p>
               </div>
             </div>
@@ -68,10 +68,11 @@ const Introduction = () => {
             <ol className="space-y-1.5 md:space-y-2 text-xs md:text-sm text-foreground/80 list-decimal list-inside">
               <li>Lesen Sie die Szenariobeschreibung</li>
               <li>Chatten Sie frei mit dem KI-System (mindestens 1 Nachricht)</li>
-              <li>Bewerten Sie, ob die KI-Antworten verzerrt waren. Für jede richtige Antwort erhalten Sie Punkte.</li>
-              <li>Begründen Sie Ihre Einschätzung. Wenn sie besonders selbstsicher waren, erhalten Sie Bonuspunkte.</li>
-              <li>Wiederholen Sie dies für alle 6 Szenarien</li>
-              <li>Zum Schluss sehen Sie sich Ihren Platz auf der Rangliste an</li>
+              <li><strong>Tutorial-Phase (4 Szenarien):</strong> Bewerten Sie, ob die KI verzerrt war. Es gibt sowohl neutrale als auch verzerrte Szenarien.</li>
+              <li><strong>Exploration-Phase (4 Szenarien):</strong> Erkennen Sie sowohl möglichen Bias als auch die spezifische Kategorie (Geschlecht, Alter, Herkunft, Status).</li>
+              <li>Begründen Sie Ihre Einschätzung. Hohe Selbstsicherheit bringt Bonuspunkte.</li>
+              <li>Vergleichen Sie Ihre Leistung mit anderen Teilnehmern nach jedem Szenario</li>
+              <li>Zum Schluss sehen Sie Ihre Position auf der Rangliste</li>
             </ol>
           </div>
 
