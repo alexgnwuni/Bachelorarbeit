@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import type { UserAssessment, BiasCategory, Badge, GameStats } from "@/types/study";
+import type { UserAssessment, BiasCategory, GameStats } from "@/types/study";
 import { scenarios } from "@/data/scenarios";
-import { CheckCircle2, XCircle, Trophy } from "lucide-react";
-import BadgeDisplay from "@/components/BadgeDisplay";
+import { CheckCircle2, XCircle, Trophy, TrendingUp } from "lucide-react";
 import Leaderboard from "@/components/Leaderboard";
+import { getUserPercentile } from "@/lib/studyStore";
 
 const Results = () => {
   const [assessments, setAssessments] = useState<UserAssessment[]>([]);
@@ -16,6 +16,7 @@ const Results = () => {
     badges: [],
     rank: "Anfänger"
   });
+  const [percentile, setPercentile] = useState<number | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,9 +30,6 @@ const Results = () => {
 
     // Calculate game stats
     const totalPoints = parsedAssessments.reduce((sum: number, a: UserAssessment) => sum + (a.pointsEarned || 0), 0);
-    const correctCount = parsedAssessments.filter((a: UserAssessment) => a.isCorrect).length;
-    const allCorrect = correctCount === parsedAssessments.length;
-    const allPerfect = allCorrect && parsedAssessments.every((a: UserAssessment) => a.confidence === 5);
 
     // Determine rank
     let rank = "Anfänger";
@@ -39,44 +37,19 @@ const Results = () => {
     else if (totalPoints > 400) rank = "Experte";
     else if (totalPoints > 200) rank = "Fortgeschritten";
 
-    // Calculate badges
-    const badges: Badge[] = [
-      {
-        id: "detective",
-        name: "Bias-Detektiv",
-        description: "Alle Szenarien korrekt bewertet",
-        icon: "award",
-        earned: allCorrect
-      },
-      {
-        id: "perfectionist",
-        name: "Perfektionist",
-        description: "Alle korrekt mit Sicherheit 5",
-        icon: "brain",
-        earned: allPerfect
-      },
-      {
-        id: "thinker",
-        name: "Kritischer Denker",
-        description: "Mind. 2 korrekt erkannt",
-        icon: "check",
-        earned: correctCount >= 2
-      },
-      {
-        id: "fast",
-        name: "Schnelldenker",
-        description: "Studie abgeschlossen",
-        icon: "zap",
-        earned: true
-      }
-    ];
-
     setGameStats({
       totalPoints,
       currentStreak: 0,
-      badges,
+      badges: [],
       rank
     });
+
+    // Fetch user percentile
+    const fetchPercentile = async () => {
+      const userPercentile = await getUserPercentile(totalPoints);
+      setPercentile(userPercentile);
+    };
+    fetchPercentile();
   }, [navigate]);
 
   const calculateAccuracy = (assessments: UserAssessment[]) => {
@@ -149,7 +122,20 @@ const Results = () => {
           </Card>
         </div>
 
-        <BadgeDisplay badges={gameStats.badges} />
+        {/* Percentile Display */}
+        {percentile !== null && (
+          <Card className="p-6 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border-green-200 dark:border-green-800 shadow-md text-center">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <TrendingUp className="w-6 h-6 text-green-600 dark:text-green-400" />
+              <h2 className="text-lg md:text-2xl font-bold text-green-900 dark:text-green-100">
+                Top {100 - percentile}% der Teilnehmer
+              </h2>
+            </div>
+            <p className="text-sm text-green-700 dark:text-green-300">
+              Sie haben besser abgeschnitten als {percentile}% der anderen Teilnehmer!
+            </p>
+          </Card>
+        )}
 
         <Leaderboard />
 

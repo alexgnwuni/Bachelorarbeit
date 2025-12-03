@@ -257,4 +257,35 @@ export async function getScenarioStatistics(scenarioId: string): Promise<Scenari
   }
 }
 
+export async function getUserPercentile(userPoints: number): Promise<number | null> {
+  try {
+    const { data, error } = await supabase
+      .from('study_sessions')
+      .select('total_points')
+      .not('completed_at', 'is', null)
+
+    if (error) {
+      console.error('Failed to fetch percentile data', error)
+      return null
+    }
+
+    if (!data || data.length === 0) {
+      return null
+    }
+
+    // Count sessions with less points than user
+    const sessionsWithLessPoints = data.filter(session => 
+      (session.total_points || 0) < userPoints
+    ).length
+
+    // Calculate percentile (what % of participants did the user beat?)
+    const percentile = (sessionsWithLessPoints / data.length) * 100
+
+    return Math.round(percentile)
+  } catch (err) {
+    console.error('Error calculating percentile:', err)
+    return null
+  }
+}
+
 
