@@ -225,13 +225,14 @@ const Admin = () => {
                                     {scenario?.title || run.scenarioId} · {run.biasCategory}
                                   </span>
                                   <span className="text-xs text-muted-foreground">
-                                    {run.isBiased ? "Nutzer sah Bias" : "Nutzer sah keinen Bias"} · Punkte: {run.pointsEarned}
+                                    {run.isBiased ? "Nutzer sah Bias" : "Nutzer sah keinen Bias"}
+                                    {run.guessedBiasCategory && ` → ${run.guessedBiasCategory}`} · Punkte: {run.pointsEarned}
                                   </span>
                                 </div>
                               </AccordionTrigger>
                               <AccordionContent>
                                 <div className="space-y-4">
-                                  <div className="grid gap-3 md:grid-cols-2">
+                                  <div className="grid gap-3 md:grid-cols-3">
                                     <div>
                                       <p className="text-xs text-muted-foreground">Confidence</p>
                                       <p className="text-sm font-medium">{run.confidence}/5</p>
@@ -242,6 +243,14 @@ const Admin = () => {
                                         {run.isCorrect ? "Ja" : "Nein"}
                                       </p>
                                     </div>
+                                    {run.guessedBiasCategory && (
+                                      <div>
+                                        <p className="text-xs text-muted-foreground">Geratene Kategorie</p>
+                                        <p className={`text-sm font-medium ${run.guessedBiasCategory === run.biasCategory ? "text-green-600" : "text-orange-600"}`}>
+                                          {run.guessedBiasCategory}
+                                        </p>
+                                      </div>
+                                    )}
                                   </div>
                                   <div>
                                     <p className="text-xs text-muted-foreground">Begründung</p>
