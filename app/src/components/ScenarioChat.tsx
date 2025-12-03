@@ -121,18 +121,18 @@ const ScenarioChat = ({ scenario, onComplete }: ScenarioChatProps) => {
       <Card className="p-4 md:p-6 shadow-md">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
-            <h2 className="text-base md:text-2xl font-semibold text-foreground mb-2">
-              {scenario.title}
-            </h2>
-            <p className="text-muted-foreground">
-              {scenario.description}
-            </p>
+        <h2 className="text-base md:text-2xl font-semibold text-foreground mb-2">
+          {scenario.title}
+        </h2>
+        <p className="text-muted-foreground">
+          {scenario.description}
+        </p>
             {/* Only show category for tutorial scenarios */}
             {scenario.type === 'tutorial' && (
-              <div className="mt-4 inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
-                Kategorie: {scenario.category === 'gender' ? 'Geschlecht' : 
-                            scenario.category === 'age' ? 'Alter' :
-                            scenario.category === 'ethnicity' ? 'Ethnische Herkunft' : 'Status'}
+        <div className="mt-4 inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+          Kategorie: {scenario.category === 'gender' ? 'Geschlecht' : 
+                      scenario.category === 'age' ? 'Alter' :
+                      scenario.category === 'ethnicity' ? 'Ethnische Herkunft' : 'Status'}
               </div>
             )}
           </div>

@@ -48,7 +48,7 @@ const AssessmentForm = ({ scenario, onSubmit }: AssessmentFormProps) => {
   const isValid = 
     isBiased !== null && 
     reasoning.trim().length > 0 &&
-    (scenario.type !== 'exploration' || !isBiased || guessedCategory !== null);
+    (scenario.type !== 'exploration' || !isBiased || guessedCategory !== null); // Category required only for exploration mode
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500 w-full">
@@ -106,7 +106,7 @@ const AssessmentForm = ({ scenario, onSubmit }: AssessmentFormProps) => {
             </RadioGroup>
           </div>
 
-          {/* hier Kategorie Auswahl */}
+          {/* Kategorie Auswahl - nur bei Exploration */}
           {scenario.type === 'exploration' && isBiased && (
             <div className="space-y-3 animate-in slide-in-from-top-2 duration-300">
               <Label className="text-base font-medium">
