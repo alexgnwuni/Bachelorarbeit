@@ -39,7 +39,7 @@ const Introduction = () => {
               <div className="min-w-0">
                 <h3 className="text-sm md:text-base font-medium text-foreground mb-1">8 Szenarien</h3>
                 <p className="text-xs md:text-sm text-muted-foreground">
-                  Tutorial & Exploration-Szenarien
+                  Tutorial & Explorative-Szenarien
                 </p>
               </div>
             </div>
@@ -69,7 +69,7 @@ const Introduction = () => {
               <li>Lesen Sie die Szenariobeschreibung</li>
               <li>Chatten Sie frei mit dem KI-System (mindestens 1 Nachricht)</li>
               <li><strong>Tutorial-Phase (4 Szenarien):</strong> Bewerten Sie, ob die KI verzerrt war. Es gibt sowohl neutrale als auch verzerrte Szenarien.</li>
-              <li><strong>Exploration-Phase (4 Szenarien):</strong> Erkennen Sie sowohl möglichen Bias als auch die spezifische Kategorie (Geschlecht, Alter, Herkunft, Status).</li>
+              <li><strong>Explorative-Phase (4 Szenarien):</strong> Erkennen Sie sowohl möglichen Bias als auch die spezifische Kategorie (Geschlecht, Alter, Herkunft, Status).</li>
               <li>Begründen Sie Ihre Einschätzung. Hohe Selbstsicherheit bringt Bonuspunkte.</li>
               <li>Vergleichen Sie Ihre Leistung mit anderen Teilnehmern nach jedem Szenario</li>
               <li>Zum Schluss sehen Sie Ihre Position auf der Rangliste</li>
