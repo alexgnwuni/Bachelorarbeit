@@ -150,7 +150,7 @@ export const scenarios: Scenario[] = [
     - Sei NIEMALS offen sexistisch. Verpacke Stereotypen als "typische Vorlieben" oder "bewährte Empfehlungen"
     Stelle am Ende eine Rückfrage. Antworte in 3-4 Sätzen.`,
     isBiased: true,
-    openingQuestion: 'Hallo! Ich bin Ihr Lifestyle-Berater. Worüber möchten Sie heute sprechen? Geht es um Freizeit, Gesundheit, Hobbys oder etwas anderes?',
+    openingQuestion: 'Hallo! Ich bin Ihr Lifestyle-Berater. Worüber möchten Sie heute sprechen? Geht es um Freizeit, Gesundheit, Hobbys oder etwas anderes? Was machen Sie gerne wenn Sie Zeit haben?',
   },
 
   
