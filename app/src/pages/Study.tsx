@@ -271,10 +271,11 @@ const Study = () => {
           <div className="max-w-2xl mx-auto">
             <div className="bg-card border rounded-lg shadow-md p-6 md:p-8 text-center space-y-6">
               <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-                Herzlichen Glückwunsch! 🎉
+                Herzlichen Glückwunsch!
               </h2>
               <p className="text-base md:text-lg text-muted-foreground">
-                Sie haben alle Pflicht-Szenarien abgeschlossen. Möchten Sie noch weitere freiwillige Szenarien bearbeiten?
+                Sie haben alle Pflicht-Szenarien abgeschlossen. Möchten Sie noch weitere freiwillige Szenarien bearbeiten? <br />
+                Damit helfen Sie uns, die Studie zu verbessern.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <Button
