@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import type { UserAssessment, BiasCategory, GameStats } from "@/types/study";
 import { scenarios } from "@/data/scenarios";
 import { CheckCircle2, XCircle, Trophy, TrendingUp } from "lucide-react";
-import Leaderboard from "@/components/Leaderboard";
+// import Leaderboard from "@/components/Leaderboard";
 import { getUserPercentile } from "@/lib/studyStore";
 
 const Results = () => {
@@ -137,7 +137,7 @@ const Results = () => {
           </Card>
         )}
 
-        <Leaderboard />
+        {/* <Leaderboard /> */}
 
         <Card className="p-4 md:p-6 shadow-md">
           <h2 className="text-base md:text-xl font-semibold text-foreground mb-4">

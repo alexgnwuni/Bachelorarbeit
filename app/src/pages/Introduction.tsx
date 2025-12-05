@@ -71,7 +71,7 @@ const Introduction = () => {
               <li><strong>Explorative-Phase (4 Szenarien):</strong> Erkennen Sie möglichen Bias und bewerten Sie die Stärke in allen Kategorien (Geschlecht, Alter, Herkunft, Status) von 0-5.</li>
               <li>Begründen Sie Ihre Einschätzung. Hohe Selbstsicherheit bringt Bonuspunkte.</li>
               <li>Vergleichen Sie Ihre Leistung mit anderen Teilnehmern nach jedem Szenario</li>
-              <li>Zum Schluss sehen Sie Ihre Position auf der Rangliste</li>
+              <li>Sehen Sie sich beim Endergebnis Ihre Statistiken an.</li>
             </ol>
           </div>
 
