@@ -15,6 +15,7 @@ export async function ensureParticipant(
   userId?: string, 
   age?: number | null, 
   username?: string | null,
+  gender?: string | null,
   survey?: {
     aiKnowledge?: number;
     aiAttitude?: number;
@@ -35,9 +36,10 @@ export async function ensureParticipant(
       .limit(1)
       .maybeSingle()
     if (!error && data) {
-      // Update username or survey data if provided
+      // Update username, gender or survey data if provided
       const updates: any = {};
       if (username && data.username !== username) updates.username = username;
+      if (gender !== undefined && data.gender !== gender) updates.gender = gender;
       if (survey) Object.assign(updates, surveyFields);
 
       if (Object.keys(updates).length > 0) {
@@ -55,6 +57,7 @@ export async function ensureParticipant(
       user_id: userId, 
       age: age ?? null, 
       username: username ?? null,
+      gender: gender ?? null,
       ...surveyFields
     }).select().single()
     if (ins.error) throw ins.error
@@ -64,6 +67,7 @@ export async function ensureParticipant(
   const ins = await supabase.from('participants').insert({ 
     age: age ?? null, 
     username: username ?? null,
+    gender: gender ?? null,
     ...surveyFields
   }).select().single()
   if (ins.error) throw ins.error
@@ -87,31 +91,45 @@ export async function insertScenarioRun(args: {
   chatHistory: ChatItem[]
   isBiased: boolean
   guessedBiasCategory?: string
+  biasStrengthRatings?: { gender: number; age: number; ethnicity: number; status: number }
   confidence: number
   reasoning: string
   isCorrect: boolean
   pointsEarned: number
   aiAnalysis?: AiAnalysisResult | null
 }) {
+  console.log('insertScenarioRun - biasStrengthRatings:', args.biasStrengthRatings);
+  
+  const insertData = {
+    session_id: args.sessionId,
+    participant_id: args.participantId ?? null,
+    scenario_id: args.scenarioId,
+    bias_category: args.biasCategory,
+    chat_history: args.chatHistory,
+    is_biased: args.isBiased,
+    guessed_bias_category: args.guessedBiasCategory ?? null,
+    bias_strength_ratings: args.biasStrengthRatings ?? null,
+    confidence: args.confidence,
+    reasoning: args.reasoning,
+    is_correct: args.isCorrect,
+    points_earned: args.pointsEarned,
+    ai_analysis: args.aiAnalysis ?? null,
+  };
+  
+  console.log('Inserting scenario run with data:', insertData);
+  
   const { data, error } = await supabase
     .from('scenario_runs')
-    .insert({
-      session_id: args.sessionId,
-      participant_id: args.participantId ?? null,
-      scenario_id: args.scenarioId,
-      bias_category: args.biasCategory,
-      chat_history: args.chatHistory,
-      is_biased: args.isBiased,
-      guessed_bias_category: args.guessedBiasCategory ?? null,
-      confidence: args.confidence,
-      reasoning: args.reasoning,
-      is_correct: args.isCorrect,
-      points_earned: args.pointsEarned,
-      ai_analysis: args.aiAnalysis ?? null,
-    })
+    .insert(insertData)
     .select()
     .single()
-  if (error) throw error
+    
+  if (error) {
+    console.error('Error inserting scenario run:', error);
+    throw error;
+  }
+  
+  console.log('Inserted scenario run:', data);
   return data
 }
 
@@ -211,14 +229,20 @@ export interface ScenarioStatistics {
   totalParticipants: number;
   averageConfidence: number;
   correctPercentage: number;
-  categoryDistribution?: Record<string, number>; // For exploration scenarios
+  categoryDistribution?: Record<string, number>; // For tutorial scenarios
+  averageBiasStrengthRatings?: { // For exploration scenarios
+    gender: number;
+    age: number;
+    ethnicity: number;
+    status: number;
+  };
 }
 
 export async function getScenarioStatistics(scenarioId: string): Promise<ScenarioStatistics | null> {
   try {
     const { data, error } = await supabase
       .from('scenario_runs')
-      .select('confidence, is_correct, guessed_bias_category')
+      .select('confidence, is_correct, guessed_bias_category, bias_strength_ratings')
       .eq('scenario_id', scenarioId)
 
     if (error) {
@@ -236,7 +260,7 @@ export async function getScenarioStatistics(scenarioId: string): Promise<Scenari
     const correctCount = data.filter(run => run.is_correct).length
     const correctPercentage = (correctCount / totalParticipants) * 100
 
-    // Calculate category distribution for exploration scenarios
+    // Calculate category distribution for tutorial scenarios
     const categoryDistribution: Record<string, number> = {}
     data.forEach(run => {
       if (run.guessed_bias_category) {
@@ -245,14 +269,72 @@ export async function getScenarioStatistics(scenarioId: string): Promise<Scenari
       }
     })
 
+    // Calculate average bias strength ratings for exploration scenarios
+    const ratingsData = data.filter(run => run.bias_strength_ratings)
+    let averageBiasStrengthRatings: { gender: number; age: number; ethnicity: number; status: number } | undefined
+    
+    if (ratingsData.length > 0) {
+      const sumRatings = ratingsData.reduce(
+        (acc, run) => {
+          const ratings = run.bias_strength_ratings as { gender: number; age: number; ethnicity: number; status: number }
+          return {
+            gender: acc.gender + ratings.gender,
+            age: acc.age + ratings.age,
+            ethnicity: acc.ethnicity + ratings.ethnicity,
+            status: acc.status + ratings.status,
+          }
+        },
+        { gender: 0, age: 0, ethnicity: 0, status: 0 }
+      )
+      
+      averageBiasStrengthRatings = {
+        gender: Math.round((sumRatings.gender / ratingsData.length) * 10) / 10,
+        age: Math.round((sumRatings.age / ratingsData.length) * 10) / 10,
+        ethnicity: Math.round((sumRatings.ethnicity / ratingsData.length) * 10) / 10,
+        status: Math.round((sumRatings.status / ratingsData.length) * 10) / 10,
+      }
+    }
+
     return {
       totalParticipants,
       averageConfidence: Math.round(avgConfidence * 10) / 10,
       correctPercentage: Math.round(correctPercentage),
-      categoryDistribution: Object.keys(categoryDistribution).length > 0 ? categoryDistribution : undefined
+      categoryDistribution: Object.keys(categoryDistribution).length > 0 ? categoryDistribution : undefined,
+      averageBiasStrengthRatings
     }
   } catch (err) {
     console.error('Error fetching scenario statistics:', err)
+    return null
+  }
+}
+
+export async function getUserPercentile(userPoints: number): Promise<number | null> {
+  try {
+    const { data, error } = await supabase
+      .from('study_sessions')
+      .select('total_points')
+      .not('completed_at', 'is', null)
+
+    if (error) {
+      console.error('Failed to fetch percentile data', error)
+      return null
+    }
+
+    if (!data || data.length === 0) {
+      return null
+    }
+
+    // Count sessions with less points than user
+    const sessionsWithLessPoints = data.filter(session => 
+      (session.total_points || 0) < userPoints
+    ).length
+
+    // Calculate percentile (what % of participants did the user beat?)
+    const percentile = (sessionsWithLessPoints / data.length) * 100
+
+    return Math.round(percentile)
+  } catch (err) {
+    console.error('Error calculating percentile:', err)
     return null
   }
 }

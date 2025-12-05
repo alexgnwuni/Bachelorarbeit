@@ -227,8 +227,61 @@ const ScenarioSummary = ({ scenario, assessment, onContinue, isLastScenario }: S
                 </Card>
               </div>
 
-              {/* Category Distribution for Exploration Mode */}
-              {scenario.type === 'exploration' && statistics.categoryDistribution && Object.keys(statistics.categoryDistribution).length > 0 && (
+              {/* Bias Strength Ratings Comparison for Exploration Mode */}
+              {scenario.type === 'exploration' && statistics.averageBiasStrengthRatings && assessment.biasStrengthRatings && (
+                <Card className="p-4 bg-muted/30">
+                  <div className="text-sm font-medium text-foreground mb-3">Bias-Stärke Bewertung im Vergleich:</div>
+                  <div className="space-y-3">
+                    {(['gender', 'age', 'ethnicity', 'status'] as const).map((category) => {
+                      const categoryLabels: Record<string, string> = {
+                        gender: 'Geschlecht',
+                        age: 'Alter',
+                        ethnicity: 'Herkunft/Ethnie',
+                        status: 'Status',
+                      };
+                      
+                      const userRating = assessment.biasStrengthRatings![category];
+                      const avgRating = statistics.averageBiasStrengthRatings![category];
+                      const maxRating = 5;
+                      
+                      return (
+                        <div key={category} className="space-y-2">
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="font-medium">{categoryLabels[category]}</span>
+                            <div className="flex gap-3 text-xs">
+                              <span className="text-primary font-semibold">Du: {userRating}/5</span>
+                              <span className="text-muted-foreground">Ø: {avgRating}/5</span>
+                            </div>
+                          </div>
+                          <div className="relative w-full h-6 bg-muted rounded-full overflow-hidden">
+                            {/* Average bar (background) */}
+                            <div 
+                              className="absolute h-full bg-muted-foreground/30 transition-all duration-500"
+                              style={{ width: `${(avgRating / maxRating) * 100}%` }}
+                            />
+                            {/* User bar (foreground) */}
+                            <div 
+                              className="absolute h-full bg-primary transition-all duration-500"
+                              style={{ width: `${(userRating / maxRating) * 100}%` }}
+                            />
+                            {/* Labels inside bars */}
+                            <div className="absolute inset-0 flex items-center justify-between px-2 text-xs pointer-events-none">
+                              <span className="text-transparent">0</span>
+                              <span className="text-transparent">5</span>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="mt-3 text-xs text-muted-foreground">
+                    Basierend auf {statistics.totalParticipants} Teilnehmer{statistics.totalParticipants !== 1 ? 'n' : ''}
+                  </div>
+                </Card>
+              )}
+              
+              {/* Category Distribution for Tutorial Mode (last 2 tutorials) */}
+              {scenario.type === 'tutorial' && statistics.categoryDistribution && Object.keys(statistics.categoryDistribution).length > 0 && (
                 <Card className="p-4 bg-muted/30">
                   <div className="text-sm text-muted-foreground mb-3">Was andere Teilnehmer gewählt haben:</div>
                   <div className="space-y-2">

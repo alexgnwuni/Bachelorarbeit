@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Brain, Target, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import Leaderboard from "@/components/Leaderboard";
 
 const Introduction = () => {
   const navigate = useNavigate();
@@ -94,9 +93,6 @@ const Introduction = () => {
             </Button>
           </div>
         </Card>
-
-        {/* Leaderboard */}
-        <Leaderboard />
 
         {/* Footer */}
         <p className="text-center text-xs md:text-sm text-muted-foreground px-2 break-words">

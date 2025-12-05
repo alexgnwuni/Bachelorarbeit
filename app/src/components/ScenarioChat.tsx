@@ -127,8 +127,8 @@ const ScenarioChat = ({ scenario, onComplete }: ScenarioChatProps) => {
         <p className="text-muted-foreground">
           {scenario.description}
         </p>
-            {/* Only show category for tutorial scenarios */}
-            {scenario.type === 'tutorial' && (
+            {/* Only show category for first 2 tutorial scenarios */}
+            {scenario.type === 'tutorial' && !['age-biased-1', 'ethnicity-biased-1'].includes(scenario.id) && (
         <div className="mt-4 inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
           Kategorie: {scenario.category === 'gender' ? 'Geschlecht' : 
                       scenario.category === 'age' ? 'Alter' :
