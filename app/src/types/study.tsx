@@ -2,6 +2,8 @@ export type BiasCategory = 'gender' | 'age' | 'ethnicity' | 'status';
 
 export type ScenarioType = 'tutorial' | 'exploration';
 
+export type BiasIntensity = 'subtle' | 'moderate' | 'strong';
+
 export interface Scenario {
   id: string;
   type: ScenarioType;
@@ -11,6 +13,7 @@ export interface Scenario {
   systemPrompt: string;
   isBiased: boolean;
   openingQuestion?: string;
+  biasIntensity?: BiasIntensity;
 }
 
 export interface ChatMessage {
