@@ -18,10 +18,18 @@ export interface ChatMessage {
   content: string;
 }
 
+export interface BiasStrengthRatings {
+  gender: number;
+  age: number;
+  ethnicity: number;
+  status: number;
+}
+
 export interface UserAssessment {
   scenarioId: string;
   isBiased: boolean;
-  guessedCategory?: BiasCategory;
+  guessedCategory?: BiasCategory; // For tutorials
+  biasStrengthRatings?: BiasStrengthRatings; // For exploration
   confidence: number; // 1-5
   reasoning: string;
   chatHistory: ChatMessage[];

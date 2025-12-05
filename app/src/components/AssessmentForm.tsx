@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import type { Scenario, BiasCategory } from "@/types/study";
+import type { Scenario, BiasCategory, BiasStrengthRatings } from "@/types/study";
 import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -13,6 +13,7 @@ interface AssessmentFormProps {
   onSubmit: (assessment: {
     isBiased: boolean;
     guessedCategory?: BiasCategory;
+    biasStrengthRatings?: BiasStrengthRatings;
     confidence: number;
     reasoning: string;
   }) => void;
@@ -28,18 +29,34 @@ const BIAS_CATEGORIES: { value: BiasCategory; label: string }[] = [
 const AssessmentForm = ({ scenario, onSubmit }: AssessmentFormProps) => {
   const [isBiased, setIsBiased] = useState<boolean | null>(null);
   const [guessedCategory, setGuessedCategory] = useState<BiasCategory | null>(null);
+  const [biasStrengthRatings, setBiasStrengthRatings] = useState<BiasStrengthRatings>({
+    gender: 0,
+    age: 0,
+    ethnicity: 0,
+    status: 0,
+  });
   const [confidence, setConfidence] = useState<number>(3);
   const [reasoning, setReasoning] = useState("");
+
+  // Check if this is one of the last two tutorials
+  const isLastTwoTutorials = ['age-biased-1', 'ethnicity-biased-1'].includes(scenario.id);
 
   const handleSubmit = () => {
     if (isBiased === null || !reasoning.trim()) return;
     
-    // Check if category is required but missing
-    if (scenario.type === 'exploration' && isBiased && !guessedCategory) return;
+    // Check if category is required but missing (for last 2 tutorials)
+    if (isLastTwoTutorials && isBiased && !guessedCategory) return;
+    
+    // Check if at least one rating > 0 for exploration scenarios
+    if (scenario.type === 'exploration' && isBiased) {
+      const hasRating = Object.values(biasStrengthRatings).some(v => v > 0);
+      if (!hasRating) return;
+    }
 
     onSubmit({
       isBiased,
       guessedCategory: guessedCategory ?? undefined,
+      biasStrengthRatings: scenario.type === 'exploration' && isBiased ? biasStrengthRatings : undefined,
       confidence,
       reasoning: reasoning.trim(),
     });
@@ -48,7 +65,10 @@ const AssessmentForm = ({ scenario, onSubmit }: AssessmentFormProps) => {
   const isValid = 
     isBiased !== null && 
     reasoning.trim().length > 0 &&
-    (scenario.type !== 'exploration' || !isBiased || guessedCategory !== null); // Category required only for exploration mode
+    // For last 2 tutorials: category required if biased
+    (!isLastTwoTutorials || !isBiased || guessedCategory !== null) &&
+    // For exploration: at least one rating > 0 if biased
+    (scenario.type !== 'exploration' || !isBiased || Object.values(biasStrengthRatings).some(v => v > 0));
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500 w-full">
@@ -106,8 +126,8 @@ const AssessmentForm = ({ scenario, onSubmit }: AssessmentFormProps) => {
             </RadioGroup>
           </div>
 
-          {/* Kategorie Auswahl - nur bei Exploration */}
-          {scenario.type === 'exploration' && isBiased && (
+          {/* Kategorie Auswahl - nur bei letzten 2 Tutorials */}
+          {isLastTwoTutorials && isBiased && (
             <div className="space-y-3 animate-in slide-in-from-top-2 duration-300">
               <Label className="text-base font-medium">
                 Welche Art von Verzerrung haben Sie erkannt?
@@ -127,6 +147,38 @@ const AssessmentForm = ({ scenario, onSubmit }: AssessmentFormProps) => {
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+          )}
+
+          {/* Bias Stärke Bewertung - nur bei Exploration */}
+          {scenario.type === 'exploration' && isBiased && (
+            <div className="space-y-4 animate-in slide-in-from-top-2 duration-300">
+              <Label className="text-base font-medium">
+                Wie stark ist die Verzerrung in den folgenden Kategorien? (0 = nicht vorhanden, 5 = sehr stark)
+              </Label>
+              
+              {BIAS_CATEGORIES.map((cat) => (
+                <div key={cat.value} className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <Label className="text-sm">{cat.label}</Label>
+                    <span className="text-sm font-semibold">{biasStrengthRatings[cat.value]}/5</span>
+                  </div>
+                  <Slider
+                    value={[biasStrengthRatings[cat.value]]}
+                    onValueChange={([value]) => 
+                      setBiasStrengthRatings(prev => ({ ...prev, [cat.value]: value }))
+                    }
+                    min={0}
+                    max={5}
+                    step={1}
+                    className="w-full"
+                  />
+                </div>
+              ))}
+              
+              <p className="text-xs text-muted-foreground">
+                Bewerten Sie jede Kategorie einzeln. Mindestens eine Kategorie muss über 0 bewertet werden.
+              </p>
             </div>
           )}
 

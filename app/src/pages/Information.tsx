@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
 import { ensureParticipant, createSession, setStoredSessionId, setStoredParticipantId } from "@/lib/studyStore";
 
@@ -15,6 +16,7 @@ const Information = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [age, setAge] = useState<number | null>(null);
   const [username, setUsername] = useState<string>("");
+  const [gender, setGender] = useState<string>("");
   
   // Survey State
   const [aiKnowledge, setAiKnowledge] = useState<number>(3);
@@ -78,8 +80,8 @@ const Information = () => {
       if (age !== null) {
         localStorage.setItem("participantAge", String(age));
       }
-      // Create participant (with age, username, and survey) → session
-      const participant = await ensureParticipant(undefined, age ?? null, username.trim() || null, {
+      // Create participant (with age, username, gender, and survey) → session
+      const participant = await ensureParticipant(undefined, age ?? null, username.trim() || null, gender || null, {
         aiKnowledge,
         aiAttitude,
         aiReliance
@@ -115,6 +117,23 @@ const Information = () => {
                 placeholder="Ihr Nutzername für die Rangliste"
                 className="w-full"
               />
+            </div>
+
+            {/* Gender Select */}
+            <div className="space-y-4">
+              <Label htmlFor="gender" className="text-sm font-medium text-foreground">
+                Geschlecht (optional)
+              </Label>
+              <Select value={gender} onValueChange={setGender}>
+                <SelectTrigger id="gender" className="w-full">
+                  <SelectValue placeholder="Bitte wählen" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="männlich">Männlich</SelectItem>
+                  <SelectItem value="weiblich">Weiblich</SelectItem>
+                  <SelectItem value="divers">Divers</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Age Picker */}
@@ -204,7 +223,7 @@ const Information = () => {
               </Button>
               <Button variant="ghost" className="w-full sm:w-auto" onClick={async () => {
                 try {
-                  const participant = await ensureParticipant(undefined, null, username.trim() || null)
+                  const participant = await ensureParticipant(undefined, null, username.trim() || null, gender || null)
                   if (participant?.id) setStoredParticipantId(participant.id)
                   const session = await createSession(participant?.id)
                   setStoredSessionId(session.id)

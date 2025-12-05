@@ -252,6 +252,25 @@ const Admin = () => {
                                       </div>
                                     )}
                                   </div>
+                                  {run.biasStrengthRatings && (
+                                    <div>
+                                      <p className="text-xs text-muted-foreground mb-2">Bias-Stärke Bewertung</p>
+                                      <div className="grid grid-cols-2 gap-2 text-sm">
+                                        <div className="p-2 rounded bg-gray-50 border">
+                                          <span className="font-medium">Geschlecht:</span> {run.biasStrengthRatings.gender}/5
+                                        </div>
+                                        <div className="p-2 rounded bg-gray-50 border">
+                                          <span className="font-medium">Alter:</span> {run.biasStrengthRatings.age}/5
+                                        </div>
+                                        <div className="p-2 rounded bg-gray-50 border">
+                                          <span className="font-medium">Herkunft:</span> {run.biasStrengthRatings.ethnicity}/5
+                                        </div>
+                                        <div className="p-2 rounded bg-gray-50 border">
+                                          <span className="font-medium">Status:</span> {run.biasStrengthRatings.status}/5
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )}
                                   <div>
                                     <p className="text-xs text-muted-foreground">Begründung</p>
                                     <p className="text-sm whitespace-pre-wrap rounded-md border border-dashed bg-gray-50 p-3">

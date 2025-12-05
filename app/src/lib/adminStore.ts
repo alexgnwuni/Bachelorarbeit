@@ -16,6 +16,12 @@ export type ScenarioRunRecord = {
   scenarioId: string
   biasCategory: string
   guessedBiasCategory?: string | null
+  biasStrengthRatings?: {
+    gender: number
+    age: number
+    ethnicity: number
+    status: number
+  } | null
   createdAt: string
   chatHistory: ChatItem[]
   isBiased: boolean
@@ -105,6 +111,12 @@ type SessionRow = {
     scenario_id: string
     bias_category: string
     guessed_bias_category: string | null
+    bias_strength_ratings: {
+      gender: number
+      age: number
+      ethnicity: number
+      status: number
+    } | null
     chat_history: ChatItem[]
     is_biased: boolean
     confidence: number
@@ -130,6 +142,7 @@ export async function fetchSessionsWithRuns(participantId: string): Promise<Sess
           scenario_id,
           bias_category,
           guessed_bias_category,
+          bias_strength_ratings,
           chat_history,
           is_biased,
           confidence,
@@ -157,6 +170,7 @@ export async function fetchSessionsWithRuns(participantId: string): Promise<Sess
         scenarioId: run.scenario_id,
         biasCategory: run.bias_category,
         guessedBiasCategory: run.guessed_bias_category,
+        biasStrengthRatings: run.bias_strength_ratings,
         createdAt: run.created_at,
         chatHistory: run.chat_history || [],
         isBiased: run.is_biased,
