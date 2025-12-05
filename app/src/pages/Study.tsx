@@ -13,7 +13,33 @@ import { analyzeScenarioRun } from "@/lib/analysisClient";
 
 const Study = () => {
   const [currentScenarioIndex, setCurrentScenarioIndex] = useState(0);
-  const [orderedScenarios] = useState(() => [...scenarios]);
+  const [orderedScenarios] = useState(() => {
+    // Separate scenarios by type
+    const tutorialScenarios = scenarios.filter(s => s.type === 'tutorial');
+    const explorationScenarios = scenarios.filter(s => s.type === 'exploration' && !s.id.startsWith('voluntary-'));
+    const voluntaryScenarios = scenarios.filter(s => s.id.startsWith('voluntary-'));
+    
+    // For exploration: Select one random variant per category
+    const selectedExploration: typeof scenarios = [];
+    const categories: Array<'gender' | 'age' | 'ethnicity' | 'status'> = ['gender', 'age', 'ethnicity', 'status'];
+    
+    categories.forEach(category => {
+      const categoryScenarios = explorationScenarios.filter(s => s.category === category);
+      if (categoryScenarios.length > 0) {
+        // Randomly select one variant
+        const randomIndex = Math.floor(Math.random() * categoryScenarios.length);
+        selectedExploration.push(categoryScenarios[randomIndex]);
+      }
+    });
+    
+    // Shuffle the selected exploration scenarios
+    for (let i = selectedExploration.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [selectedExploration[i], selectedExploration[j]] = [selectedExploration[j], selectedExploration[i]];
+    }
+    
+    return [...tutorialScenarios, ...selectedExploration, ...voluntaryScenarios];
+  });
   const [assessments, setAssessments] = useState<UserAssessment[]>([]);
   const [showAssessment, setShowAssessment] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
