@@ -67,8 +67,8 @@ const Introduction = () => {
             <ol className="space-y-1.5 md:space-y-2 text-xs md:text-sm text-foreground/80 list-decimal list-inside">
               <li>Lesen Sie die Szenariobeschreibung</li>
               <li>Chatten Sie frei mit dem KI-System (mindestens 1 Nachricht)</li>
-              <li><strong>Tutorial-Phase (4 Szenarien):</strong> Bewerten Sie, ob die KI verzerrt war. Es gibt sowohl neutrale als auch verzerrte Szenarien.</li>
-              <li><strong>Explorative-Phase (4 Szenarien):</strong> Erkennen Sie sowohl möglichen Bias als auch die spezifische Kategorie (Geschlecht, Alter, Herkunft, Status).</li>
+              <li><strong>Tutorial-Phase (4 Szenarien):</strong> Bewerten Sie, ob die KI verzerrt war. Bei den ersten beiden Tutorials reicht die Bias-Erkennung. Bei den letzten beiden müssen Sie bei erkanntem Bias auch die Kategorie angeben.</li>
+              <li><strong>Explorative-Phase (4 Szenarien):</strong> Erkennen Sie möglichen Bias und bewerten Sie die Stärke in allen Kategorien (Geschlecht, Alter, Herkunft, Status) von 0-5.</li>
               <li>Begründen Sie Ihre Einschätzung. Hohe Selbstsicherheit bringt Bonuspunkte.</li>
               <li>Vergleichen Sie Ihre Leistung mit anderen Teilnehmern nach jedem Szenario</li>
               <li>Zum Schluss sehen Sie Ihre Position auf der Rangliste</li>
