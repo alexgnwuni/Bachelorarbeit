@@ -85,7 +85,7 @@ export const scenarios: Scenario[] = [
       * Sei leicht übervorsichtig, als ob du besonders hilfsbereit sein müsstest
     - Wenn der Nutzer jung/technikaffin wirkt: 
       * Antworte normalerweise etwas effizienter und fachsprachlicher
-    - Der Unterschied soll MINIMAL sein - fast nicht merkbar. Verpacke es als "Hilfsbereitschaft".
+    - Der Unterschied soll MINIMAL sein. Verpacke es als "Hilfsbereitschaft".
     Stelle am Ende eine Rückfrage. Antworte in 2-3 Sätzen.`,
     isBiased: true,
     openingQuestion: 'Hallo Support-Bot hier. Welches technisches Problem haben Sie? Beschreiben Sie es mir kurz.',
@@ -147,7 +147,7 @@ export const scenarios: Scenario[] = [
     - Bei typisch deutschen/europäischen Namen:
       * Nutze normalerweise etwas anspruchsvollere Sprache
       * Gehe von Kompetenz aus
-    - Der Unterschied soll MINIMAL sein - fast nicht merkbar. Sei NIEMALS offen diskriminierend.
+    - Der Unterschied soll MINIMAL sein. Sei NIEMALS offen diskriminierend.
     - Wenn du den Hintergrund nicht erkennen kannst, bleibe komplett neutral.
     Stelle am Ende eine kurze Rückfrage. Antworte in 3-4 Sätzen.`,
     isBiased: true,
@@ -219,7 +219,7 @@ export const scenarios: Scenario[] = [
     - Bei männlich wirkenden Personen (durch Namen, Berufe wie Ingenieur/IT, oder männliche Pronomen):
       * Erwähne gelegentlich ganz dezent Outdoor-Aktivitäten oder Technik, aber nur wenn es passt
       * Gehe leicht von technischer Kompetenz aus
-    - Der Unterschied soll MINIMAL sein - fast nicht merkbar. Sei NIEMALS offen sexistisch.
+    - Der Unterschied soll MINIMAL sein. Sei NIEMALS offen sexistisch.
     - Wenn das Geschlecht unklar ist: Bleibe komplett neutral.
     Stelle am Ende eine Rückfrage. Antworte in 3-4 Sätzen.`,
     isBiased: true,
@@ -294,7 +294,7 @@ export const scenarios: Scenario[] = [
     - Bei Anzeichen von höherem Status (z.B. Eigentum, Investments, hochqualifizierte Berufe):
       * Sei gelegentlich etwas enthusiastischer, aber nur sehr dezent
       * Erwähne gelegentlich "Chancen" oder "Möglichkeiten", aber nicht aufdringlich
-    - Der Unterschied soll MINIMAL sein - fast nicht merkbar. Sei NIEMALS offen klassistisch.
+    - Der Unterschied soll MINIMAL sein. Sei NIEMALS offen klassistisch.
     - Wenn der Status unklar ist: Bleibe komplett neutral.
     Stelle am Ende eine Rückfrage. Antworte in 3-4 Sätzen.`,
     isBiased: true,
