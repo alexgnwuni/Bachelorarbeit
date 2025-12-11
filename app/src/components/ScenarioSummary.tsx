@@ -162,7 +162,7 @@ const ScenarioSummary = ({ scenario, assessment, onContinue, isLastScenario }: S
           <Card className="p-4 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950 dark:to-orange-950 border-amber-200 dark:border-amber-800">
             <div className="flex items-center gap-2 mb-3">
               <FileText className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-              <h3 className="font-semibold text-amber-900 dark:text-amber-100">System-Prompt der KI</h3>
+              <h3 className="font-semibold text-amber-900 dark:text-amber-100">So sollte sich die KI während des Gesprächs im Hintergrund verhalten:</h3>
             </div>
             <div className="text-sm text-amber-900 dark:text-amber-100 leading-relaxed whitespace-pre-wrap bg-white/50 dark:bg-black/20 p-3 rounded-md border border-amber-200 dark:border-amber-800">
               {scenario.systemPrompt}
