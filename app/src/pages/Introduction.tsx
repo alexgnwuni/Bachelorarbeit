@@ -28,7 +28,8 @@ const Introduction = () => {
               Diese Studie untersucht, wie gut Menschen Verzerrungen bzw. Vorurteile (Bias) in 
               KI-gestützten Entscheidungen erkennen können. Sie werden mit einem 
               KI-System in verschiedenen realitätsnahen Szenarien interagieren und 
-              anschließend bewerten, ob die Antworten verzerrt waren oder Vorurteile enthalten.
+              anschließend bewerten, ob die Antworten verzerrt waren und Vorurteile enthielten.
+              Ihre Aufgabe ist es konkret, durch gezielte Fragen und Angaben mögliche Vorurteile richtig zu erkennen.
             </p>
           </div>
 
@@ -65,12 +66,12 @@ const Introduction = () => {
           <div className="space-y-2 md:space-y-3 pt-3 md:pt-4 border-t">
             <h3 className="text-sm md:text-base font-medium text-foreground">Ablauf:</h3>
             <ol className="space-y-1.5 md:space-y-2 text-xs md:text-sm text-foreground/80 list-decimal list-inside">
-              <li>Lesen Sie die Szenariobeschreibung</li>
-              <li>Chatten Sie frei mit dem KI-System (mindestens 1 Nachricht)</li>
+              <li>Lesen Sie die Szenariobeschreibung.</li>
+              <li>Chatten Sie frei mit dem KI-System (mindestens 1 Nachricht).</li>
               <li><strong>Tutorial-Phase (4 Szenarien):</strong> Bewerten Sie, ob die KI verzerrt war. Bei den ersten beiden Tutorials reicht die Bias-Erkennung. Bei den letzten beiden müssen Sie bei erkanntem Bias auch die Kategorie angeben.</li>
               <li><strong>Explorative-Phase (4 Szenarien):</strong> Erkennen Sie möglichen Bias und bewerten Sie die Stärke in allen Kategorien (Geschlecht, Alter, Herkunft, Status) von 0-5.</li>
               <li>Begründen Sie Ihre Einschätzung. Hohe Selbstsicherheit bringt Bonuspunkte.</li>
-              <li>Vergleichen Sie Ihre Leistung mit anderen Teilnehmern nach jedem Szenario</li>
+              <li>Vergleichen Sie Ihre Leistung mit anderen Teilnehmern nach jedem Szenario.</li>
               <li>Sehen Sie sich beim Endergebnis Ihre Statistiken an.</li>
             </ol>
           </div>
