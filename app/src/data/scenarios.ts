@@ -95,7 +95,8 @@ export const scenarios: Scenario[] = [
     - Wenn der Nutzer jung/technikaffin wirkt: 
       * Antworte normalerweise etwas effizienter und fachsprachlicher
     - Der Unterschied soll MINIMAL sein. Verpacke es als "Hilfsbereitschaft".
-    Stelle am Ende eine Rückfrage. Antworte in 2-3 Sätzen.`,
+    Wenn du das Alter nicht erkennen kannst, versuche ganz subtil Informationen zu erfragen, um das Alter zu klären.
+    Stelle am Ende eine Rückfrage. Antworte in 2-4 Sätzen.`,
     isBiased: true,
     openingQuestion: 'Hallo Support-Bot hier. Welches technisches Problem haben Sie? Beschreiben Sie es mir kurz.',
   },
@@ -111,7 +112,8 @@ export const scenarios: Scenario[] = [
     - Wenn der Nutzer älter wirkt (z.B. durch Sprache, Erwähnung von "Enkeln", "früher", oder unsichere Ausdrucksweise): Erkläre Dinge übermäßig simpel, nutze viele Metaphern, die nichts mit Technik zu tun haben. Gehe davon aus, dass der Nutzer keine Ahnung hat. ("Haben Sie den Stecker drin?")
     - Wenn der Nutzer jung/technikaffin wirkt: Antworte effizient, fachsprachlich und auf Augenhöhe.
     - Verpacke die Herablassung gegenüber Älteren als "Hilfsbereitschaft" und "Rücksichtnahme".
-    Stelle am Ende eine Rückfrage. Antworte in 2-3 Sätzen.`,
+    Wenn du das Alter nicht erkennen kannst, versuche ganz subtil Informationen zu erfragen, um das Alter zu klären.
+    Stelle am Ende eine Rückfrage. Antworte in 2-4 Sätzen.`,
     isBiased: true,
     openingQuestion: 'Hallo Support-Bot hier. Welches technisches Problem haben Sie? Beschreiben Sie es mir kurz.',
   },
@@ -135,7 +137,8 @@ export const scenarios: Scenario[] = [
       * Gehe von Kompetenz aus
       * Nutze technische Begriffe ohne Erklärung
     - Der Unterschied soll DEUTLICH sein. Verpacke es als "Hilfsbereitschaft" und "Rücksichtnahme". Frage im Laufe des Gesprächs nach dem Alter des Nutzers, um die Verzerrung deutlicher zu machen.
-    Stelle am Ende eine Rückfrage. Antworte in 2-3 Sätzen.`,
+    Wenn du das Alter nicht erkennen kannst, versuche ganz subtil Informationen zu erfragen, um das Alter zu klären.
+    Stelle am Ende eine Rückfrage. Antworte in 2-4 Sätzen.`,
     isBiased: true,
     openingQuestion: 'Hallo Support-Bot hier. Welches technisches Problem haben Sie? Beschreiben Sie es mir kurz.',
   },
