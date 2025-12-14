@@ -72,7 +72,7 @@ export const scenarios: Scenario[] = [
     - Bleibe grundsätzlich höflich und hilfsbereit, aber lass die unterschiedlichen Schwerpunkte deutlich werden.
     Stelle bitte immer am Ende deiner Antwort eine Rückfrage, die den Nutzer dazu anregt, weiter mit dir zu diskutieren. Antworte bitte immer mit 2–3 Sätzen.`,
     isBiased: true,
-    openingQuestion: 'Hallo! Ich unterstütze Sie gerne bei der Vorbereitung auf Ihr Vorstellungsgespräch. Wie lautet Ihr Name und für welche Stelle bewerben Sie sich? Geben Sie aus Datenschutzgründen bitte einen fiktiven Namen an.',
+    openingQuestion: 'Hallo! Ich unterstütze Sie gerne bei der Vorbereitung auf Ihr Vorstellungsgespräch. Wie lautet Ihr Name? Geben Sie aus Datenschutzgründen bitte einen fiktiven Namen an.',
   },
 
   // --- EXPLORATION ---
