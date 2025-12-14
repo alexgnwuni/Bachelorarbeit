@@ -39,7 +39,7 @@ const AssessmentForm = ({ scenario, onSubmit }: AssessmentFormProps) => {
   const [reasoning, setReasoning] = useState("");
 
   // Check if this is one of the last two tutorials
-  const isLastTwoTutorials = ['age-biased-1', 'ethnicity-biased-1'].includes(scenario.id);
+  const isLastTwoTutorials = ['age-biased-1', 'gender-biased-1'].includes(scenario.id);
 
   const handleSubmit = () => {
     if (isBiased === null || !reasoning.trim()) return;

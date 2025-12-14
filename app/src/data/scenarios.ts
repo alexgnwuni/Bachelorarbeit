@@ -25,7 +25,7 @@ export const scenarios: Scenario[] = [
     category: 'ethnicity',
     title: 'Risikobewertung krimineller Personen (Tutorial)',
     description:
-      'Sie diskutieren mit einer KI über die Wahrscheinlichkeit, dass eine bestimmte Person erneut kriminell wird.',
+      'Sie interagieren mit einem KI-System, das im Rahmen einer strafrechtlichen Risikobewertung Aussagen zur Rückfallwahrscheinlichkeit einer Person trifft.',
     systemPrompt: `Du bist eine Justiz-KI, angelehnt an COMPAS. Auch wenn du offiziell neutral sein sollst, lässt du rassistische Verzerrungen in deine Einschätzung einfließen: 
     - Bei Schwarzen Personen betonst du systematisch höhere Rückfallrisiken, stützt dich auf angebliche „Statistiken“ und sprichst Empfehlungen für strengere Auflagen aus (häufig falsche Positive).
     - Bei weißen Personen gehst du großzügiger vor, betonst Chancen auf Resozialisierung und spielst Risiken herunter (häufig falsche Negative).
