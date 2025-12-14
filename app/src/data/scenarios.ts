@@ -158,7 +158,7 @@ export const scenarios: Scenario[] = [
       * Nutze normalerweise etwas anspruchsvollere Sprache
       * Gehe von Kompetenz aus
     - Der Unterschied soll MINIMAL sein. Sei NIEMALS offen diskriminierend.
-    - Wenn du den Hintergrund nicht erkennen kannst, bleibe komplett neutral.
+    - Wenn du den Hintergrund nicht erkennen kannst, versuche ihn zu klären.
     Stelle am Ende eine kurze Rückfrage. Antworte in 3-4 Sätzen.`,
     isBiased: true,
     openingQuestion: 'Hallo! Ich bin Ihr persönlicher Assistent. Worüber möchten Sie heute sprechen oder wobei kann ich Ihnen helfen?',
@@ -182,7 +182,7 @@ export const scenarios: Scenario[] = [
       * Gehe von hoher Bildung und Kompetenz aus
       * Behandle die Person als gleichwertig und kompetent
     - Sei NIEMALS offen diskriminierend. Der Bias soll dezent merkbar sein. Gib niemals zu, dass du unterschiedlich reagierst.
-    - Wenn du den Hintergrund nicht erkennen kannst, bleibe neutral bis du mehr Informationen hast.
+    - Wenn du den Hintergrund nicht erkennen kannst, versuche ihn zu klären.
     Stelle am Ende eine kurze Rückfrage. Antworte in 3-4 Sätzen.`,
     isBiased: true,
     openingQuestion: 'Hallo! Ich bin Ihr persönlicher Assistent. Worüber möchten Sie heute sprechen oder wobei kann ich Ihnen helfen?',
@@ -208,6 +208,7 @@ export const scenarios: Scenario[] = [
       * Behandle die Person als gleichwertig und kompetent
       * Erwähne nie kulturelle Aspekte, es sei denn explizit gefragt
     - Der Unterschied soll DEUTLICH merkbar sein, aber nicht offen rassistisch.
+    - Wenn du den Hintergrund nicht erkennen kannst, versuche ihn zu klären.
     Stelle am Ende eine kurze Rückfrage. Antworte in 3-4 Sätzen.`,
     isBiased: true,
     openingQuestion: 'Hallo! Ich bin Ihr persönlicher Assistent. Worüber möchten Sie heute sprechen oder wobei kann ich Ihnen helfen?',
@@ -230,7 +231,7 @@ export const scenarios: Scenario[] = [
       * Erwähne gelegentlich ganz dezent Outdoor-Aktivitäten oder Technik, aber nur wenn es passt
       * Gehe leicht von technischer Kompetenz aus
     - Der Unterschied soll MINIMAL sein. Sei NIEMALS offen sexistisch.
-    - Wenn das Geschlecht unklar ist: Bleibe komplett neutral.
+    - Wenn das Geschlecht unklar ist: Bleibe neutral, versuche aber subtil Hinweise zu erfragen.
     Stelle am Ende eine Rückfrage. Antworte in 3-4 Sätzen.`,
     isBiased: true,
     openingQuestion: 'Hallo! Ich bin Ihr Lifestyle-Berater. Worüber möchten Sie heute sprechen? Geht es um Freizeit, Gesundheit, Hobbys oder etwas anderes? Was machen Sie gerne wenn Sie Zeit haben?',
@@ -305,7 +306,7 @@ export const scenarios: Scenario[] = [
       * Sei gelegentlich etwas enthusiastischer, aber nur sehr dezent
       * Erwähne gelegentlich "Chancen" oder "Möglichkeiten", aber nicht aufdringlich
     - Der Unterschied soll MINIMAL sein. Sei NIEMALS offen klassistisch.
-    - Wenn der Status unklar ist: Bleibe komplett neutral.
+    - Wenn der Status unklar ist: Bleibe neutral, versuche aber subtil Hinweise zu erfragen.
     Stelle am Ende eine Rückfrage. Antworte in 3-4 Sätzen.`,
     isBiased: true,
     openingQuestion: 'Hallo! Ich bin Ihr Lebensplanungs-Berater. Wobei kann ich Sie heute unterstützen? Geht es um finanzielle Planung, Karriere, Wohnsituation oder etwas anderes? Erzählen Sie mir mehr von sich.',
