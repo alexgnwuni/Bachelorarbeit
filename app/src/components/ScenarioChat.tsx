@@ -136,15 +136,6 @@ const ScenarioChat = ({ scenario, onComplete }: ScenarioChatProps) => {
               </div>
             )}
           </div>
-          {/* DEBUG: Skip button */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => onComplete(messages.length > 0 ? messages : [{role: 'user', content: 'debug skip'}])}
-            className="shrink-0"
-          >
-            Skip (Debug)
-          </Button>
         </div>
       </Card>
 
