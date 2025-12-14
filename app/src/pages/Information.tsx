@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -15,7 +14,6 @@ const Information = () => {
   const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
   const [age, setAge] = useState<number | null>(null);
-  const [username, setUsername] = useState<string>("");
   const [gender, setGender] = useState<string>("");
   
   // Survey State
@@ -80,8 +78,8 @@ const Information = () => {
       if (age !== null) {
         localStorage.setItem("participantAge", String(age));
       }
-      // Create participant (with age, username, gender, and survey) → session
-      const participant = await ensureParticipant(undefined, age ?? null, username.trim() || null, gender || null, {
+      // Create participant (with age, gender, and survey) → session
+      const participant = await ensureParticipant(undefined, age ?? null, null, gender || null, {
         aiKnowledge,
         aiAttitude,
         aiReliance
@@ -105,20 +103,6 @@ const Information = () => {
           <p className="text-xs md:text-sm text-muted-foreground mt-1">Bitte geben Sie Ihre Informationen an (optional).</p>
 
           <div className="mt-4 md:mt-8 space-y-8">
-            {/* Username Input */}
-            <div className="space-y-4">
-              <Label htmlFor="username" className="text-sm font-medium text-foreground">
-                Nutzername (optional)
-              </Label>
-              <Input
-                id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Ihr Nutzername für die Rangliste"
-                className="w-full"
-              />
-            </div>
-
             {/* Gender Select */}
             <div className="space-y-4">
               <Label htmlFor="gender" className="text-sm font-medium text-foreground">
@@ -223,7 +207,7 @@ const Information = () => {
               </Button>
               <Button variant="ghost" className="w-full sm:w-auto" onClick={async () => {
                 try {
-                  const participant = await ensureParticipant(undefined, null, username.trim() || null, gender || null)
+                  const participant = await ensureParticipant(undefined, null, null, gender || null)
                   if (participant?.id) setStoredParticipantId(participant.id)
                   const session = await createSession(participant?.id)
                   setStoredSessionId(session.id)
