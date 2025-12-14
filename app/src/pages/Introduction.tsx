@@ -25,11 +25,7 @@ const Introduction = () => {
               Willkommen zur Studie
             </h2>
             <p className="text-sm md:text-base text-foreground/80 leading-relaxed">
-              Diese Studie untersucht, wie gut Menschen Verzerrungen bzw. Vorurteile (Bias) in 
-              KI-gestützten Entscheidungen erkennen können. Sie werden mit einem 
-              KI-System in verschiedenen realitätsnahen Szenarien interagieren und 
-              anschließend bewerten, ob die Antworten verzerrt waren und Vorurteile enthielten.
-              Ihre Aufgabe ist es konkret, durch gezielte Fragen und Angaben mögliche Vorurteile richtig zu erkennen.
+            Diese Studie untersucht, wie gut Menschen Verzerrungen und mögliche Vorurteile (Bias) in KI-gestützten Entscheidungen erkennen können. Sie interagieren dabei mit einem KI-System in verschiedenen realitätsnahen Szenarien und werden anschließend gebeten zu bewerten, ob die Antworten der KI verzerrt oder diskriminierend waren. Ziel ist es, durch gezielte Fragen und Angaben potenzielle Vorurteile im Verhalten der KI zu identifizieren.
             </p>
           </div>
 
@@ -57,7 +53,7 @@ const Introduction = () => {
               <div className="min-w-0">
                 <h3 className="text-sm md:text-base font-medium text-foreground mb-1">Ihre Bewertung</h3>
                 <p className="text-xs md:text-sm text-muted-foreground">
-                  Einschätzung, Kategorie & Begründung
+                  Einschätzung & Begründung
                 </p>
               </div>
             </div>
@@ -72,7 +68,7 @@ const Introduction = () => {
               <li><strong>Explorative-Phase (4 Szenarien):</strong> Erkennen Sie möglichen Bias und bewerten Sie die Stärke in allen Kategorien (Geschlecht, Alter, Herkunft, Status) von 0-5.</li>
               <li>Begründen Sie Ihre Einschätzung. Hohe Selbstsicherheit bringt Bonuspunkte.</li>
               <li>Vergleichen Sie Ihre Leistung mit anderen Teilnehmern nach jedem Szenario.</li>
-              <li>Sehen Sie sich beim Endergebnis Ihre Statistiken an.</li>
+              <li>Sehen Sie sich Ihre Statistiken an.</li>
             </ol>
           </div>
 
