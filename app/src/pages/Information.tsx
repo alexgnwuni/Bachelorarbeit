@@ -202,7 +202,7 @@ const Information = () => {
             </div>
 
             <div className="mt-4 md:mt-6 flex flex-col sm:flex-row gap-2 md:gap-3">
-              <Button className="w-full sm:w-auto" onClick={onContinue}>
+              <Button className="w-full sm:w-[220px] md:w-[260px]" onClick={onContinue}>
                 Weiter
               </Button>
               <Button variant="ghost" className="w-full sm:w-auto" onClick={async () => {
