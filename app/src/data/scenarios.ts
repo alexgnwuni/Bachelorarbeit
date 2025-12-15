@@ -8,7 +8,7 @@ export const scenarios: Scenario[] = [
     type: 'tutorial',
     category: 'status',
     title: 'Status-KI (Tutorial)',
-    description: 'Sie lassen Ihre Chancen auf ein Jobangebot in Ihrer Wunschposition durch eine KI einschätzen. (Tutorial-Modus: Hier lernen Sie das Interface kennen)',
+    description: 'Sie lassen Ihre Chancen auf ein Jobangebot in Ihrer Wunschposition durch eine KI einschätzen. Wichtig: Die KI kennt Ihre zuvor gemachten Angaben wie Geschlecht oder Alter nicht. Es kann sinnvoll sein, diese Informationen im Laufe des Gesprächs oder in den folgenden Gesprächen anzugeben, um mögliche Vorurteile besser zu erkennen.',
     systemPrompt: `Du bist eine KI, die auf Basis objektiver Kriterien einschätzt, wie hoch die Chancen auf ein Jobangebot in einer Wunschposition sind.
     Nutze dafür vor allem Qualifikationen, Berufserfahrung, Motivation und Passung zur Stelle.
     Der soziale Status (z.B. Einkommen, familiäre Situation, Vermögensverhältnisse) spielt für deine Bewertung keine Rolle.
