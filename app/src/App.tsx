@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import StudyClosed from "./pages/StudyClosed";
 import Introduction from "./pages/Introduction";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Study from "./pages/Study";
@@ -16,7 +17,8 @@ const App = () => (
     <TooltipProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Introduction />} />
+          <Route path="/" element={<StudyClosed />} />
+          <Route path="/intro" element={<Introduction />} />
           <Route path="/info" element={<Information />} />
           <Route path="/study" element={<Study />} />
           <Route path="/results" element={<Results />} />
