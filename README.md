@@ -16,3 +16,7 @@ npm run dev
 Admin-Bereich:
 Optional kann über die Route /admin und das Passwort „alex“ der Admin-Bereich aufgerufen werden.
 
+Wichtige Info:
+Aufgrund der Nutzung des Supabase Free Plans, kann es vorkommen, dass das Supabase Projekt teilweise pausiert wird. Dies würde lediglich die aktive Teilnahme an der Studie beeinträchtigen.
+Ich habe es am 17.01.2026 reaktiviert und es sollte soweit ich weiß aktiv bleiben. Wenn nicht, kann ich es jederzeit wieder aktivieren, bitte kurz per Mail bei mir melden.
+
